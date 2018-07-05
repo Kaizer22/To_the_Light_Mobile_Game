@@ -44,6 +44,7 @@ public class ToTheLightGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		Gdx.app.exit();
 
 	}
 }

@@ -28,6 +28,8 @@ public class MenuScreen implements Screen {
     public MyButton button_exit;
     public MyButton button_music;
 
+    private float stateTime = 0f;
+
 
 
     public MenuScreen(ToTheLightGame toTheLightGame) {
@@ -38,8 +40,6 @@ public class MenuScreen implements Screen {
 
         game.iH.setCondition_Menu(this);
         game.iM.initializeMenu();
-
-
 
         Gdx.input.setInputProcessor(game.iH);
     }
@@ -57,7 +57,10 @@ public class MenuScreen implements Screen {
         camera.update();
 
         game.batch.setProjectionMatrix(camera.combined);
-        setEffectPos();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+
+
 
         game.batch.begin();
 
@@ -67,8 +70,10 @@ public class MenuScreen implements Screen {
     }
 
     private void drawMenu(){
-        game.batch.draw(game.iM.getBg_effect(),effect_x,effect_y, pxSize*3,pxSize*3);
+        game.batch.draw(game.iM.getMenuBgCurrentFrame(stateTime),0,0,screenWidth,screenHeight);
+        game.batch.draw(game.iM.getMenuBgEffectCurrentFrame(stateTime),pxSize*3,screenWidth/2-pxSize*5, pxSize*6,pxSize*6);
         game.batch.draw(game.iM.getLogo(),(float)(pxSize*2.5),pxSize*13,pxSize*7,(float)(pxSize*3.5));
+
 
         button_exit.draw(game.batch);
         button_play.draw(game.batch);
@@ -78,11 +83,7 @@ public class MenuScreen implements Screen {
 
     }
 
-    private void setEffectPos(){
 
-        effect_x = pxSize*3 + (r.nextInt(4)*(r.nextInt(2)-1));
-        effect_y = screenWidth/2-pxSize*4+(r.nextInt(4)*(r.nextInt(2)-1));
-    }
 
     public float getScreenHeight() {
         return screenHeight;
@@ -127,7 +128,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.iM.disposeMenu();
+        game.iM.dispose();
     }
 
 

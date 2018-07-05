@@ -1,6 +1,7 @@
 package com.mygdx.helpers;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -12,8 +13,31 @@ import java.util.Map;
  */
 
 public class ImageManager {
-    AnimationManger animator;
-    private class AnimationManger{}
+
+
+    private class AnimationManger{
+        Animation menu_bg;
+        Animation menu_bg_effect;
+        Animation bug_move;
+        Animation coin;
+
+        void initializeMenu(){
+            menu_bg_effect = initAnim(97,"menu_bg_effect/bg_effect",0.15f);
+            menu_bg = initAnim(27,"menu_bg/menu_bg",1f);
+        }
+
+        private Animation initAnim(int num_frames, String directory_and_prefix,float duration){
+            TextureRegion[] tr;
+            tr = new TextureRegion[num_frames];
+            for (int i = 0; i < num_frames; i++){
+                tr[i] = new TextureRegion();
+                tr[i].setRegion(new Texture(directory_and_prefix+"_"+i+".png"));
+            }
+            return new Animation(duration,tr);
+        }
+    }
+
+    private AnimationManger animator;
 
     private Map<String,TextureRegion> textureRegions;
     Texture bs;
@@ -26,10 +50,11 @@ public class ImageManager {
 
     public ImageManager(){
         textureRegions = new HashMap<String, TextureRegion>();
-
+        animator = new AnimationManger();
     }
 
     public void initializeMenu() {
+            animator.initializeMenu();
             textureRegions.put("bg_effect",new TextureRegion(new Texture("bg_effect.png")));
             textureRegions.put("logo",new TextureRegion(new Texture("logo.png")));
             bs = new Texture("buttons.png");
@@ -46,7 +71,13 @@ public class ImageManager {
             textureRegions.put("button_playDown",tmp[1][0]);
 
     }
-    public void disposeMenu(){
+
+    public void initializeGameplay(){
+        textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
+    }
+
+    public void dispose(){
+        textureRegions.clear();
     } //TODO узнать как TextureRegion s влияют на производительность, и нужен ли здесь .dispose()
 
 
@@ -80,6 +111,14 @@ public class ImageManager {
     }
     public TextureRegion getButton_PlayDown(){
         return textureRegions.get("button_playDown");
+    }
+    public TextureRegion getStone_Wall(){return textureRegions.get("stone_wall");}
+
+    public TextureRegion getMenuBgCurrentFrame(float stateTime){
+        return (TextureRegion) animator.menu_bg.getKeyFrame(stateTime,true);
+    }
+    public TextureRegion getMenuBgEffectCurrentFrame(float stateTime){
+        return (TextureRegion) animator.menu_bg_effect.getKeyFrame(stateTime,true);
     }
 
 
