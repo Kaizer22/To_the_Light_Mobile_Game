@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.mygdx.com.mygdx.gameplay.GameRenderer;
+import com.mygdx.helpers.MyButton;
 
 /**
  * Created by denis on 17.06.18.
@@ -12,14 +14,22 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class GameplayScreen implements Screen {
 
     final ToTheLightGame game;
+    private GameRenderer renderer;
 
     float screenWidth, screenHeight, pxSize;
 
     private OrthographicCamera camera;
 
+    public MyButton button_music;
+    public MyButton button_pause;
+
+    private float stateTime = 0f;
+
     public GameplayScreen (ToTheLightGame toTheLightGame){
         game = toTheLightGame;
         camera = new OrthographicCamera();
+
+
 
         game.iH.setCondition_Gameplay(this);
         game.iM.initializeGameplay();
@@ -40,20 +50,25 @@ public class GameplayScreen implements Screen {
 
         game.batch.setProjectionMatrix(camera.combined);
 
+        stateTime += Gdx.graphics.getDeltaTime();
 
         game.batch.begin();
-        //временно
-        game.batch.draw(game.iM.getStone_Wall(),0,0,screenWidth,screenHeight);
+
+        renderer.drawWorld(stateTime);
+
         game.batch.end();
 
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height){
         camera.setToOrtho(false,width,height);
+
         screenHeight = height;
         screenWidth = width;
         pxSize = width/12;
+
+        renderer = new GameRenderer(game.iM,game.batch,screenWidth,screenHeight,pxSize);
     }
 
     @Override

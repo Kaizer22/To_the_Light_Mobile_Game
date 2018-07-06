@@ -21,6 +21,10 @@ public class ImageManager {
         Animation bug_move;
         Animation coin;
 
+        void initializeGameplay(){
+            bug_move = initAnim("gameplay/bug.png",64,64,0.16f);
+        }
+
         void initializeMenu(){
             menu_bg_effect = initAnim(97,"menu_bg_effect/bg_effect",0.15f);
             menu_bg = initAnim(27,"menu_bg/menu_bg",1f);
@@ -35,6 +39,21 @@ public class ImageManager {
             }
             return new Animation(duration,tr);
         }
+
+        private Animation initAnim(String directory,int width,int height,float duration){
+            Texture bug = new Texture(directory);
+            TextureRegion[][] tmp = TextureRegion.split(bug,width,height);
+            TextureRegion[] tx = new TextureRegion[tmp.length*tmp[0].length];
+            int k = 0;
+            for (int i = 0; i < tmp.length; i++) {
+                for (int j = 0; j < tmp[i].length ; j++) {
+                    tx[k] = tmp[i][j];
+                    k++;
+                }
+            }
+            return new Animation(duration,tx);
+        }
+
     }
 
     private AnimationManger animator;
@@ -55,7 +74,8 @@ public class ImageManager {
 
     public void initializeMenu() {
             animator.initializeMenu();
-            textureRegions.put("bg_effect",new TextureRegion(new Texture("bg_effect.png")));
+
+        textureRegions.put("bg_effect",new TextureRegion(new Texture("bg_effect.png")));
             textureRegions.put("logo",new TextureRegion(new Texture("logo.png")));
             bs = new Texture("buttons.png");
         TextureRegion tmp[][] = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/6);
@@ -73,7 +93,10 @@ public class ImageManager {
     }
 
     public void initializeGameplay(){
+        animator.initializeGameplay();
+
         textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
+
     }
 
     public void dispose(){
@@ -119,6 +142,14 @@ public class ImageManager {
     }
     public TextureRegion getMenuBgEffectCurrentFrame(float stateTime){
         return (TextureRegion) animator.menu_bg_effect.getKeyFrame(stateTime,true);
+    }
+
+    public TextureRegion getBugCurrentFrame(float stateTime){
+        return (TextureRegion) animator.bug_move.getKeyFrame(stateTime,true);
+    }
+
+    public TextureRegion getGameplayBackground(String type){
+        return textureRegions.get(type);
     }
 
 

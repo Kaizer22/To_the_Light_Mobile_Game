@@ -19,8 +19,8 @@ import java.util.Random;
 public class MenuScreen implements Screen {
     final ToTheLightGame game;
 
-    float screenWidth, screenHeight, pxSize, effect_x,effect_y;
-    Random r; //// TODO: 02.07.18  подготовить анимацию эффекта, вместо рандомной тряски
+    float screenWidth, screenHeight, pxSize;
+
 
     private OrthographicCamera camera;
     public MyButton button_play;
@@ -36,7 +36,6 @@ public class MenuScreen implements Screen {
 
         game = toTheLightGame;
         camera = new OrthographicCamera();
-        r = new Random();
 
         game.iH.setCondition_Menu(this);
         game.iM.initializeMenu();
