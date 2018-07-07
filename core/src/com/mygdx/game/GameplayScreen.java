@@ -14,7 +14,7 @@ import com.mygdx.helpers.MyButton;
 public class GameplayScreen implements Screen {
 
     final ToTheLightGame game;
-    private GameRenderer renderer;
+    public GameRenderer renderer;
 
     float screenWidth, screenHeight, pxSize;
 
@@ -31,7 +31,7 @@ public class GameplayScreen implements Screen {
 
 
 
-        game.iH.setCondition_Gameplay(this);
+
         game.iM.initializeGameplay();
 
     }
@@ -52,6 +52,8 @@ public class GameplayScreen implements Screen {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
+        renderer.update();
+
         game.batch.begin();
 
         renderer.drawWorld(stateTime);
@@ -60,6 +62,13 @@ public class GameplayScreen implements Screen {
 
     }
 
+    public float getScreenHeight() {
+        return screenHeight;
+    }
+
+    public float getScreenWidth() {
+        return screenWidth;
+    }
     @Override
     public void resize(int width, int height){
         camera.setToOrtho(false,width,height);
@@ -69,6 +78,7 @@ public class GameplayScreen implements Screen {
         pxSize = width/12;
 
         renderer = new GameRenderer(game.iM,game.batch,screenWidth,screenHeight,pxSize);
+        game.iH.setCondition_Gameplay(this);
     }
 
     @Override

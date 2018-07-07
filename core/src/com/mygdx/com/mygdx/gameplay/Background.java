@@ -15,33 +15,56 @@ public class Background {
     Type section1;
     Type section2;
 
+    float height;
+
     public Background(float x, float y, float screenHeight){
         x1 = x;
         y1 = y;
 
+        height = screenHeight;
+
         x2 = x1;
-        y2 = y+screenHeight;
+        y2 = y + height;
 
-        r = new Random();
 
-        random = r.nextInt(1);                //TODO добавить больше фоновых изображаений
 
-        switch (random){
-            case (0):
-                section1 = Type.STONE_WALL;
-        }
+        r = new Random(); //TODO добавить больше фоновых изображаений
 
-        random = r.nextInt(1);
-
-        switch (random){
-            case (0):
-                section2 = Type.STONE_WALL;
-        }
+        section1 = getRandomType();
+        section2 = getRandomType();
 
 
 
 
     }
+
+    private Type getRandomType(){
+        random = r.nextInt(1);
+
+        switch (random){
+            case (0):
+                return Type.STONE_WALL;
+        }
+
+        return Type.STONE_WALL;
+    }
+
+    public void update(float shift){
+        y1 -= shift;
+        y2 -= shift;
+
+        if ((y1<-height) || (y2<-height)){
+            if (y1<-height){
+                section1 = getRandomType();
+                y1 = height;
+            }
+            if (y2<-height){
+                section2 = getRandomType();
+                y2 = height;
+            }
+        }
+    }
+
 
     enum Type{
         STONE_WALL, BRICKS, DARKNESS, TEMPLE_WALL, MINE_WALL, UNDERGROUND_CITY, SKY;

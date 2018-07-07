@@ -25,9 +25,12 @@ public class GameRenderer {
     }
 
 
-
+    public void update(){
+        world.update();
+    }
 
     public void drawWorld(float stateTime){
+
         String bg1 = world.background.section1.toString().toLowerCase();
         String bg2 = world.background.section2.toString().toLowerCase();
 
@@ -44,5 +47,9 @@ public class GameRenderer {
         float bug_y = world.bug.y;
         float bug_size = world.bug.size;
         batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
+    }
+
+    public Bug getBug(){
+        return world.bug;
     }
 }
