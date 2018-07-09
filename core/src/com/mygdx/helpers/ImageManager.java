@@ -97,6 +97,8 @@ public class ImageManager {
 
         textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
 
+        textureRegions.put("wood",new TextureRegion(new Texture("gameplay/wood.png")));
+
     }
 
     public void dispose(){
@@ -105,9 +107,7 @@ public class ImageManager {
 
 
 
-    public TextureRegion getBg_effect(){
-        return textureRegions.get("bg_effect");
-    }
+
     public TextureRegion getLogo(){
         return textureRegions.get("logo");
     }
@@ -135,7 +135,6 @@ public class ImageManager {
     public TextureRegion getButton_PlayDown(){
         return textureRegions.get("button_playDown");
     }
-    public TextureRegion getStone_Wall(){return textureRegions.get("stone_wall");}
 
     public TextureRegion getMenuBgCurrentFrame(float stateTime){
         return (TextureRegion) animator.menu_bg.getKeyFrame(stateTime,true);
@@ -149,6 +148,10 @@ public class ImageManager {
     }
 
     public TextureRegion getGameplayBackground(String type){
+        return textureRegions.get(type);
+    }
+
+    public TextureRegion getObstacle(String type){
         return textureRegions.get(type);
     }
 
