@@ -28,5 +28,14 @@ public class GameWorld {
             obstacles[i].update(shift);
             
         }
+
+        GameLogic.checkCollisions(obstacles, bug);
+
+        if (!bug.canMoveUp){
+            bug.setY(bug.y - shift);
+            if (bug.y < -bug.size){
+                bug.isAlive = false;
+            }
+        }
     }
 }

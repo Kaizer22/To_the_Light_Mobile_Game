@@ -17,6 +17,9 @@ public class Obstacle {
     Rectangle[] left_plank;
     Rectangle[] right_plank;
 
+    Rectangle lp_collision;
+    Rectangle rp_collision;
+
     Random r;
 
     float blockSize;
@@ -47,6 +50,8 @@ public class Obstacle {
             right_plank[i] = new Rectangle(screenWidth-blockSize*i,y,blockSize,blockSize);
         }
 
+        lp_collision = new Rectangle(0,y,left_plank.length*blockSize, blockSize);
+        rp_collision = new Rectangle(width-right_plank.length*blockSize,y,right_plank.length*blockSize,blockSize);
         switch (r.nextInt(1)){
             case 0:
                 t = Type.WOOD;
@@ -59,14 +64,11 @@ public class Obstacle {
         }
     }
 
+
+
     public void update(float shift){
         y -= shift;
-        for (int i = 0; i < left_plank.length; i++) {
-            left_plank[i].y = y;
-        }
-        for (int i = 0; i < right_plank.length; i++) {
-            right_plank[i].y = y;
-        }
+
 
         if (y < -blockSize){
             y = blockSize*29;
@@ -82,8 +84,8 @@ public class Obstacle {
                     t = Type.SHARP;
             }
 
-            int lp = r.nextInt(10)+1;
-            int rp = r.nextInt(12-lp)+1;
+            int lp = r.nextInt(9)+1;
+            int rp = r.nextInt(11-lp)+1;
             left_plank = new Rectangle[lp];
             right_plank = new Rectangle[rp];
 
@@ -93,6 +95,18 @@ public class Obstacle {
             for (int i = 0; i < rp; i++) {
                 right_plank[i] = new Rectangle(width-blockSize*i,y,blockSize,blockSize);
             }
+            lp_collision = new Rectangle(0,y,left_plank.length*blockSize, blockSize);
+            rp_collision = new Rectangle(width-right_plank.length*blockSize,y,right_plank.length*blockSize,blockSize);
+
+        }else{
+            for (int i = 0; i < left_plank.length; i++) {
+                left_plank[i].y = y;
+            }
+            for (int i = 0; i < right_plank.length; i++) {
+                right_plank[i].y = y;
+            }
+            rp_collision.y -=shift;
+            lp_collision.y -=shift;
         }
     }
 

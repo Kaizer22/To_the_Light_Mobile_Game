@@ -1,5 +1,6 @@
 package com.mygdx.com.mygdx.gameplay;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.helpers.ImageManager;
 
@@ -26,7 +27,10 @@ public class GameRenderer {
 
 
     public void update(){
-        world.update();
+        if (world.bug.isAlive)
+            world.update();
+        else
+            Gdx.app.exit();
     }
 
     public void drawWorld(float stateTime){
