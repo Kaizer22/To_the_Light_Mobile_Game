@@ -99,6 +99,10 @@ public class ImageManager {
 
         textureRegions.put("wood",new TextureRegion(new Texture("gameplay/wood.png")));
 
+        //------------ Debug textures -------------
+        textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
+        textureRegions.put("bcoll",new TextureRegion(new Texture("gameplay/bcoll.png")));
+
     }
 
     public void dispose(){
@@ -135,6 +139,11 @@ public class ImageManager {
     public TextureRegion getButton_PlayDown(){
         return textureRegions.get("button_playDown");
     }
+
+
+    public TextureRegion getColl(){return textureRegions.get("coll");}
+    public TextureRegion getBColl(){return textureRegions.get("bcoll");}
+
 
     public TextureRegion getMenuBgCurrentFrame(float stateTime){
         return (TextureRegion) animator.menu_bg.getKeyFrame(stateTime,true);

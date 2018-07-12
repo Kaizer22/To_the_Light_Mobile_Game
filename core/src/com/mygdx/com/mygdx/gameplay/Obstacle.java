@@ -38,20 +38,20 @@ public class Obstacle {
         width = screenWidth;
 
         r = new Random();
-        int lp = r.nextInt(10)+1;
-        int rp = r.nextInt(12-lp)+1;
+
+        int lp = r.nextInt(8)+1;
+        int rp = r.nextInt(9-lp)+1;
         left_plank = new Rectangle[lp];
         right_plank = new Rectangle[rp];
 
         for (int i = 0; i < lp; i++) {
-            left_plank[i] = new Rectangle(x+blockSize*i,y,blockSize,blockSize);
+            left_plank[i] = new Rectangle(blockSize*i,y,blockSize,blockSize);
         }
         for (int i = 0; i < rp; i++) {
-            right_plank[i] = new Rectangle(screenWidth-blockSize*i,y,blockSize,blockSize);
+            right_plank[i] = new Rectangle(width-rp*blockSize+i*blockSize,y,blockSize,blockSize);
         }
-
-        lp_collision = new Rectangle(0,y,left_plank.length*blockSize, blockSize);
-        rp_collision = new Rectangle(width-right_plank.length*blockSize,y,right_plank.length*blockSize,blockSize);
+        lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
+        rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
         switch (r.nextInt(1)){
             case 0:
                 t = Type.WOOD;
@@ -84,8 +84,8 @@ public class Obstacle {
                     t = Type.SHARP;
             }
 
-            int lp = r.nextInt(9)+1;
-            int rp = r.nextInt(11-lp)+1;
+            int lp = r.nextInt(8)+1;
+            int rp = r.nextInt(9-lp)+1;
             left_plank = new Rectangle[lp];
             right_plank = new Rectangle[rp];
 
@@ -93,10 +93,10 @@ public class Obstacle {
                 left_plank[i] = new Rectangle(blockSize*i,y,blockSize,blockSize);
             }
             for (int i = 0; i < rp; i++) {
-                right_plank[i] = new Rectangle(width-blockSize*i,y,blockSize,blockSize);
+                right_plank[i] = new Rectangle(width-rp*blockSize+i*blockSize,y,blockSize,blockSize);
             }
-            lp_collision = new Rectangle(0,y,left_plank.length*blockSize, blockSize);
-            rp_collision = new Rectangle(width-right_plank.length*blockSize,y,right_plank.length*blockSize,blockSize);
+            lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
+            rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
 
         }else{
             for (int i = 0; i < left_plank.length; i++) {

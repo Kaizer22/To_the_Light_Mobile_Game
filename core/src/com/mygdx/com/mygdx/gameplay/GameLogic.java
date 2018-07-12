@@ -8,22 +8,24 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class GameLogic {
+    static double score;
     public static void checkCollisions(Obstacle[] obstacles, Bug bug){
         for (int i = 0; i < obstacles.length ; i++) {
-            if (Math.abs(obstacles[i].y - bug.y) < bug.size*1.5){
+
+            if (Math.abs(Math.max(obstacles[i].y,bug.collision.y) - Math.min(obstacles[i].y,bug.collision.y)) < bug.size){
                 if (collides(obstacles[i],bug)){
-                    if (obstacles[i].y < bug.collision.y && bug.collision.x< obstacles[i].lp_collision.width ||
-                            (obstacles[i].y < bug.collision.y && bug.collision.x> obstacles[i].rp_collision.x)){
+                    if (obstacles[i].y < bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width ||
+                            (obstacles[i].y < bug.collision.y && bug.collision.x > obstacles[i].rp_collision.x)){
                         bug.canMoveDown = false;
 
                     }else if ((obstacles[i].y > bug.collision.y && bug.collision.x< obstacles[i].lp_collision.width) ||
-                            (obstacles[i].y > bug.collision.y && bug.collision.x> obstacles[i].rp_collision.x)){
+                            (obstacles[i].y > bug.collision.y && (bug.collision.x+bug.collision.width) > obstacles[i].rp_collision.x)){
                         bug.canMoveUp = false;
 
                     }//else if (obstacles[i].lp_collision.)
 
-                }else
-                    bug.update();
+                }
+
             }
         }
 
@@ -34,5 +36,9 @@ public class GameLogic {
             return true;
         }
         return false;
+    }
+
+    public static void updateScore(float shift ){
+        score += shift / 1000;
     }
 }

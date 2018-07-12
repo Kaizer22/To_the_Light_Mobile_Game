@@ -34,30 +34,19 @@ public class GameRenderer {
     }
 
     public void drawWorld(float stateTime){
-//____________________________________________________________________________________
-        String bg1 = world.background.section1.toString().toLowerCase();
-        String bg2 = world.background.section2.toString().toLowerCase();
 
-        float bg_x1 = world.background.x1;
-        float bg_y1 = world.background.y1;
+        drawBackground();
+        drawBug(stateTime);
+        drawObstacles();
 
-        float bg_x2 = world.background.x2;
-        float bg_y2 = world.background.y2;
+    }
 
-        batch.draw(imageManager.getGameplayBackground(bg1), bg_x1,bg_y1,screenWidth,screenHeight);
-        batch.draw(imageManager.getGameplayBackground(bg2), bg_x2,bg_y2,screenWidth,screenHeight);
-//_________________________________________________________________________________________
-        float bug_x = world.bug.x;
-        float bug_y = world.bug.y;
-        float bug_size = world.bug.size;
-        batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
-
-//_____________________________________________________________________________________
+    private void drawObstacles(){
         String type;
         int obstacles = world.obstacles.length;
         int lp,rp;
 
-        float bl_x, bl_y, bl_size = world.obstacles[0].left_plank[0].height;
+        float bl_x, bl_y, bl_size = pxSize;
 
         for (int i = 0; i < obstacles; i++) {
             type = world.obstacles[i].t.toString().toLowerCase();
@@ -74,8 +63,37 @@ public class GameRenderer {
                 bl_y = world.obstacles[i].right_plank[j].y;
                 batch.draw(imageManager.getObstacle(type),bl_x,bl_y,bl_size,bl_size);
             }
+
+            //TODO delete this
+            batch.draw(imageManager.getColl(),world.obstacles[i].lp_collision.x,world.obstacles[i].lp_collision.y,world.obstacles[i].lp_collision.width,world.obstacles[i].lp_collision.height);
+            batch.draw(imageManager.getColl(),world.obstacles[i].rp_collision.x,world.obstacles[i].rp_collision.y,world.obstacles[i].rp_collision.width,world.obstacles[i].rp_collision.height);
+            //--
         }
 
+    }
+    private void drawBug(float stateTime){
+        float bug_x = world.bug.x;
+        float bug_y = world.bug.y;
+        float bug_size = world.bug.size;
+        batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
+
+
+        // /TODO del this
+        batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
+
+    }
+    private void drawBackground(){
+        String bg1 = world.background.section1.toString().toLowerCase();
+        String bg2 = world.background.section2.toString().toLowerCase();
+
+        float bg_x1 = world.background.x1;
+        float bg_y1 = world.background.y1;
+
+        float bg_x2 = world.background.x2;
+        float bg_y2 = world.background.y2;
+
+        batch.draw(imageManager.getGameplayBackground(bg1), bg_x1,bg_y1,screenWidth,screenHeight);
+        batch.draw(imageManager.getGameplayBackground(bg2), bg_x2,bg_y2,screenWidth,screenHeight);
     }
 
     public Bug getBug(){

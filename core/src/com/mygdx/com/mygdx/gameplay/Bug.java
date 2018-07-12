@@ -14,10 +14,10 @@ public class Bug {
 
     public boolean isAlive;
 
-    boolean canMoveRight;
-    boolean canMoveLeft;
-    boolean canMoveUp;
-    boolean canMoveDown;
+    boolean canMoveRight = true;
+    boolean canMoveLeft = true;
+    boolean canMoveUp = true;
+    boolean canMoveDown = true;
 
     public Bug(float x, float y, float size){
         isAlive = true;
@@ -25,30 +25,30 @@ public class Bug {
         this.y = y;
         this.size = size;
         input_borders = new Rectangle(x,y,size,size);
-        collision = new Rectangle(x + size/4,y + size/4,size/2,size/2);
+        collision = new Rectangle(x + size/(float)(3.6),y + size/4,size/(float)(2.2),size/(float)(2.1)); //Цифры получены экспериментальным путем
     }
 
     public void setPosition(float x, float y){
         if (this.y<y && canMoveUp){
             this.y = y-size/2;
-        }else if (this.y>y && canMoveDown){
+        }else if (this.y>=y && canMoveDown){
             this.y = y-size/2;
         }
 
         if (this.x>x && canMoveLeft){
             this.x = x-size/2;
-        }else if (this.x<x && canMoveRight){
+        }else if (this.x<=x && canMoveRight){
             this.x = x-size/2;
         }
 
         input_borders.setPosition(this.x,this.y);
-        collision.setPosition(this.x,this.y);
+        collision.setPosition(this.x + size/(float)(3.6),this.y + size/4);
     }
 
     public void setY(float y){
         this.y = y;
         input_borders.setPosition(x,this.y);
-        collision.setPosition(x,this.y);
+        collision.setPosition(x + size/(float)(3.6),this.y + size/4);
 
     }
 
