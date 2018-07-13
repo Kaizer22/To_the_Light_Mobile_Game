@@ -40,7 +40,7 @@ public class Obstacle {
         r = new Random();
 
         int lp = r.nextInt(8)+1;
-        int rp = r.nextInt(9-lp)+1;
+        int rp = r.nextInt(10-lp)+1;
         left_plank = new Rectangle[lp];
         right_plank = new Rectangle[rp];
 
@@ -70,7 +70,7 @@ public class Obstacle {
         y -= shift;
 
 
-        if (y < -blockSize){
+        if (y < -blockSize*2){ //Коэффициент 2 для того, чтобы препятствие могло сдвинуть жука до смертельной отметки ( полное исчезновение с экрана )
             y = blockSize*29;
 
             switch (r.nextInt(1)){  //TODO добавить больше типов препятствий
@@ -85,7 +85,7 @@ public class Obstacle {
             }
 
             int lp = r.nextInt(8)+1;
-            int rp = r.nextInt(9-lp)+1;
+            int rp = r.nextInt(10-lp)+1;
             left_plank = new Rectangle[lp];
             right_plank = new Rectangle[rp];
 

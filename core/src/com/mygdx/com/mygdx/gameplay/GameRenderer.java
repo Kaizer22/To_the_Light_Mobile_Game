@@ -14,23 +14,27 @@ public class GameRenderer {
     SpriteBatch batch;
     float screenWidth, screenHeight, pxSize;
 
-    public GameRenderer(ImageManager iM, SpriteBatch b, float sW, float sH, float pxS){
+    public GameRenderer(ImageManager iM, SpriteBatch b, float sW, float sH, float pxS) {
         imageManager = iM;
         batch = b;
         screenHeight = sH;
         screenWidth = sW;
         pxSize = pxS;
 
-        world = new GameWorld(sW,sH,pxS);
+        world = new GameWorld(sW, sH, pxS);
 
     }
 
 
-    public void update(){
-        if (world.bug.isAlive)
+    public void update() {
+        if (world.bug.isAlive) {
             world.update();
-        else
+            System.out.println("______________________"+ (int)GameLogic.score + "()()()()" +world.shift+ "____________________");
+        }else {
+
             Gdx.app.exit();
+
+        }
     }
 
     public void drawWorld(float stateTime){
@@ -65,8 +69,8 @@ public class GameRenderer {
             }
 
             //TODO delete this
-            batch.draw(imageManager.getColl(),world.obstacles[i].lp_collision.x,world.obstacles[i].lp_collision.y,world.obstacles[i].lp_collision.width,world.obstacles[i].lp_collision.height);
-            batch.draw(imageManager.getColl(),world.obstacles[i].rp_collision.x,world.obstacles[i].rp_collision.y,world.obstacles[i].rp_collision.width,world.obstacles[i].rp_collision.height);
+            //batch.draw(imageManager.getColl(),world.obstacles[i].lp_collision.x,world.obstacles[i].lp_collision.y,world.obstacles[i].lp_collision.width,world.obstacles[i].lp_collision.height);
+            //batch.draw(imageManager.getColl(),world.obstacles[i].rp_collision.x,world.obstacles[i].rp_collision.y,world.obstacles[i].rp_collision.width,world.obstacles[i].rp_collision.height);
             //--
         }
 
@@ -78,7 +82,7 @@ public class GameRenderer {
         batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
 
 
-        // /TODO del this
+        //TODO del this
         batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
 
     }

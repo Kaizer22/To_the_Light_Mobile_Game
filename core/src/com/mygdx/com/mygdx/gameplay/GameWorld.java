@@ -13,7 +13,7 @@ public class GameWorld {
     public GameWorld(float screenWidth, float screenHeight,float pxSize){
         bug = new Bug(screenWidth/2,screenHeight/2,pxSize*4);
         background = new Background(0,0,screenHeight);
-        shift = 10;
+        shift = 3; //3
         obstacles = new Obstacle[6];
         obstacles[0] = new Obstacle(screenWidth,screenHeight,0,pxSize*4);
         for (int i = 1; i < obstacles.length; i++) {
@@ -23,6 +23,7 @@ public class GameWorld {
     }
 
     public void update(){
+        shift = GameLogic.calculateShift(shift);
         background.update(shift);
         for (int i = 0; i < obstacles.length; i++) {
             obstacles[i].update(shift);
@@ -33,11 +34,12 @@ public class GameWorld {
 
 
 
-        if (!bug.canMoveUp){
+        if (!bug.canMoveUp) {
             bug.setY(bug.y - shift);
-            if (bug.y < -bug.size){
+            if (bug.y < -bug.size) {
                 bug.isAlive = false;
             }
         }
+       GameLogic.updateScore(shift);
     }
 }

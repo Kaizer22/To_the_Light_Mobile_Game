@@ -57,9 +57,15 @@ public class GameplayScreen implements Screen {
         game.batch.begin();
 
         renderer.drawWorld(stateTime);
+        drawUI();
 
         game.batch.end();
 
+    }
+
+    private void drawUI(){
+        game.batch.draw(game.iM.getFrameEffect(),0,0,screenWidth,screenHeight);
+        button_music.draw(game.batch);
     }
 
     public float getScreenHeight() {
@@ -76,6 +82,8 @@ public class GameplayScreen implements Screen {
         screenHeight = height;
         screenWidth = width;
         pxSize = width/12;
+
+        button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
 
         renderer = new GameRenderer(game.iM,game.batch,screenWidth,screenHeight,pxSize);
         game.iH.setCondition_Gameplay(this);

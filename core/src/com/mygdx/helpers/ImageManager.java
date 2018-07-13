@@ -99,6 +99,13 @@ public class ImageManager {
 
         textureRegions.put("wood",new TextureRegion(new Texture("gameplay/wood.png")));
 
+        textureRegions.put("frame", new TextureRegion(new Texture("gameplay/frame.png")));
+
+        bs = new Texture("buttons.png");
+        TextureRegion tmp[][] = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/6);
+        textureRegions.put("button_musicOn",tmp[4][0]);
+        textureRegions.put("button_musicOff",tmp[5][0]);
+
         //------------ Debug textures -------------
         textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
         textureRegions.put("bcoll",new TextureRegion(new Texture("gameplay/bcoll.png")));
@@ -143,6 +150,8 @@ public class ImageManager {
 
     public TextureRegion getColl(){return textureRegions.get("coll");}
     public TextureRegion getBColl(){return textureRegions.get("bcoll");}
+
+    public TextureRegion getFrameEffect(){return textureRegions.get("frame");}
 
 
     public TextureRegion getMenuBgCurrentFrame(float stateTime){

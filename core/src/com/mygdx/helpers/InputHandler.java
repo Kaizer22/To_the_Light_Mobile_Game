@@ -1,5 +1,6 @@
 package com.mygdx.helpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.mygdx.com.mygdx.gameplay.Bug;
@@ -98,10 +99,11 @@ public class InputHandler implements InputProcessor {  // разные точк�
             {break;}
             case IN_GAME:
             {
+                int bufX = Gdx.input.getX(pointer);
 
-                bufY = (int)(g.getScreenHeight()-screenY);
-                if (iBug.input_borders.contains(screenX,bufY)){ //&& isBugClicked){
-                    iBug.setPosition(screenX,bufY);
+                bufY = (int)(g.getScreenHeight()-Gdx.input.getY(pointer));
+                if (iBug.input_borders.contains(bufX,bufY)){ //&& isBugClicked){
+                    iBug.setPosition(bufX,bufY);
                 }
             }
         }

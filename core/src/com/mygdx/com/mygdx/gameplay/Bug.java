@@ -25,30 +25,31 @@ public class Bug {
         this.y = y;
         this.size = size;
         input_borders = new Rectangle(x,y,size,size);
-        collision = new Rectangle(x + size/(float)(3.6),y + size/4,size/(float)(2.2),size/(float)(2.1)); //Цифры получены экспериментальным путем
+        collision = new Rectangle(x + size/3,y + size/4,size/(float)(2.7),size/(float)(2.2)); //Цифры получены экспериментальным путем
     }
 
     public void setPosition(float x, float y){
-        if (this.y<y && canMoveUp){
+        //System.out.println("Bug pos" + this.x + "^" + this.y + " Input " + x + "^" + y);
+        if (this.y+size/2>y && canMoveDown){
             this.y = y-size/2;
-        }else if (this.y>=y && canMoveDown){
-            this.y = y-size/2;
+        }else if (this.y+ size/2<y && canMoveUp){
+        this.y = y-size/2;
         }
 
-        if (this.x>x && canMoveLeft){
+        if (this.x+size/2>x && canMoveLeft){
             this.x = x-size/2;
-        }else if (this.x<=x && canMoveRight){
+        }else if (this.x+size/2 < x && canMoveRight){
             this.x = x-size/2;
         }
 
         input_borders.setPosition(this.x,this.y);
-        collision.setPosition(this.x + size/(float)(3.6),this.y + size/4);
+        collision.setPosition(this.x + size/(float)(3),this.y + size/4);
     }
 
     public void setY(float y){
         this.y = y;
         input_borders.setPosition(x,this.y);
-        collision.setPosition(x + size/(float)(3.6),this.y + size/4);
+        collision.setPosition(x + size/(float)(3),this.y + size/4);
 
     }
 
