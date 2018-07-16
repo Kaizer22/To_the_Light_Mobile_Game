@@ -52,7 +52,7 @@ public class Obstacle {
         }
         lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
         rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
-        switch (r.nextInt(1)){
+        switch (r.nextInt(3)){
             case 0:
                 t = Type.WOOD;
                 break;
@@ -71,9 +71,9 @@ public class Obstacle {
 
 
         if (y < -blockSize*2){ //Коэффициент 2 для того, чтобы препятствие могло сдвинуть жука до смертельной отметки ( полное исчезновение с экрана )
-            y = blockSize*29;
+            y = blockSize*24;
 
-            switch (r.nextInt(1)){  //TODO добавить больше типов препятствий
+            switch (r.nextInt(3)){  //TODO добавить больше типов препятствий
                 case 0:
                     t = Type.WOOD;
                     break;

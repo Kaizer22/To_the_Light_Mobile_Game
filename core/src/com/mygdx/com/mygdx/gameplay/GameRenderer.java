@@ -26,15 +26,9 @@ public class GameRenderer {
     }
 
 
-    public void update() {
-        if (world.bug.isAlive) {
-            world.update();
-            System.out.println("______________________"+ (int)GameLogic.score + "()()()()" +world.shift+ "____________________");
-        }else {
-
-            Gdx.app.exit();
-
-        }
+    public boolean update() {
+        world.update();
+        return world.bug.isAlive;
     }
 
     public void drawWorld(float stateTime){

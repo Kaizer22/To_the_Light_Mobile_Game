@@ -22,7 +22,7 @@ public class ImageManager {
         Animation coin;
 
         void initializeGameplay(){
-            bug_move = initAnim("gameplay/bug.png",64,64,0.16f);
+            bug_move = initAnim("gameplay/bug.png",64,64,0.08f);
         }
 
         void initializeMenu(){
@@ -96,8 +96,11 @@ public class ImageManager {
         animator.initializeGameplay();
 
         textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
+        textureRegions.put("bricks",new TextureRegion(new Texture("gameplay/bricks.png")));
 
         textureRegions.put("wood",new TextureRegion(new Texture("gameplay/wood.png")));
+        textureRegions.put("stone",new TextureRegion(new Texture("gameplay/stone.png")));
+        textureRegions.put("sharp",new TextureRegion(new Texture("gameplay/sharp.png")));
 
         textureRegions.put("frame", new TextureRegion(new Texture("gameplay/frame.png")));
 
@@ -105,6 +108,14 @@ public class ImageManager {
         TextureRegion tmp[][] = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/6);
         textureRegions.put("button_musicOn",tmp[4][0]);
         textureRegions.put("button_musicOff",tmp[5][0]);
+
+        bs = new Texture("gameplay/button_pause.png");
+        tmp = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/2);
+        textureRegions.put("button_pauseUp",tmp[0][0]);
+        textureRegions.put("button_pauseDown",tmp[1][0]);
+
+
+        textureRegions.put("on_pause_bg", new TextureRegion(new Texture("gameplay/on_pause_bg.png")));
 
         //------------ Debug textures -------------
         textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
@@ -146,6 +157,10 @@ public class ImageManager {
     public TextureRegion getButton_PlayDown(){
         return textureRegions.get("button_playDown");
     }
+    public TextureRegion getButton_PauseUp(){return textureRegions.get("button_pauseUp");}
+    public TextureRegion getButton_PauseDown(){return textureRegions.get("button_pauseDown");}
+
+    public TextureRegion getOnPauseBg(){return textureRegions.get("on_pause_bg");}
 
 
     public TextureRegion getColl(){return textureRegions.get("coll");}

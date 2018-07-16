@@ -45,7 +45,8 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        //TODO добавить музыку
+        //game.sM.playMainTheme();
     }
 
     @Override

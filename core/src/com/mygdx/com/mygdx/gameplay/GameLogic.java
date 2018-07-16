@@ -8,38 +8,43 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class GameLogic {
-    static double score = 1;
+    public static double score = 1;
     static int scoreFactor = 10;
+    static int highscore;
     public static void checkCollisions(Obstacle[] obstacles, Bug bug){
         for (int i = 0; i < obstacles.length ; i++) {
 
             if (Math.abs(Math.max(obstacles[i].y,bug.collision.y) - Math.min(obstacles[i].y,bug.collision.y)) < bug.size/2){
                 if (collides(obstacles[i],bug)) {
-                    if ((obstacles[i].y > bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width) ||
-                            (obstacles[i].y > bug.collision.y && (bug.collision.x + bug.collision.width) > obstacles[i].rp_collision.x)) {
-                        bug.canMoveUp = false;
-                        bug.canMoveDown = true;
-                        bug.canMoveLeft = true;
-                        bug.canMoveRight = true;
-                    } else if (obstacles[i].y + obstacles[i].blockSize > bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width ||
-                            (obstacles[i].y + obstacles[i].blockSize > bug.collision.y && bug.collision.x > obstacles[i].rp_collision.x)) {
-                        bug.canMoveDown = false;
-                        bug.canMoveUp = true;
-                        bug.canMoveLeft = true;
-                        bug.canMoveRight = true;
+                    if (obstacles[i].t == Obstacle.Type.SHARP){
+                        bug.isAlive = false;
+                    } else {
+                        if ((obstacles[i].y > bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width) ||
+                                (obstacles[i].y > bug.collision.y && (bug.collision.x + bug.collision.width) > obstacles[i].rp_collision.x)) {
+                            bug.canMoveUp = false;
+                            bug.canMoveDown = true;
+                            bug.canMoveLeft = true;
+                            bug.canMoveRight = true;
+                        } else if (obstacles[i].y + obstacles[i].blockSize > bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width ||
+                                (obstacles[i].y + obstacles[i].blockSize > bug.collision.y && bug.collision.x > obstacles[i].rp_collision.x)) {
+                            bug.canMoveDown = false;
+                            bug.canMoveUp = true;
+                            bug.canMoveLeft = true;
+                            bug.canMoveRight = true;
 
-                    } else if ((bug.collision.y > obstacles[i].y - bug.collision.height) && (bug.collision.y > obstacles[i].y + obstacles[i].blockSize) && bug.collision.x + bug.collision.width < obstacles[i].rp_collision.x) {
-                        bug.canMoveLeft = false;
-                        bug.canMoveDown = true;
-                        bug.canMoveUp = true;
-                        bug.canMoveRight = true;
+                        } else if ((bug.collision.y > obstacles[i].y - bug.collision.height) && (bug.collision.y > obstacles[i].y + obstacles[i].blockSize) && bug.collision.x + bug.collision.width < obstacles[i].rp_collision.x) {
+                            bug.canMoveLeft = false;
+                            bug.canMoveDown = true;
+                            bug.canMoveUp = true;
+                            bug.canMoveRight = true;
 
-                    } else if ((bug.collision.y > obstacles[i].y - bug.collision.height) && (bug.collision.y < obstacles[i].y + obstacles[i].blockSize) && bug.collision.x + bug.collision.width > obstacles[i].rp_collision.x) {
-                        bug.canMoveRight = false;
-                        bug.canMoveDown = true;
-                        bug.canMoveUp = true;
-                        bug.canMoveLeft = true;
+                        } else if ((bug.collision.y > obstacles[i].y - bug.collision.height) && (bug.collision.y < obstacles[i].y + obstacles[i].blockSize) && bug.collision.x + bug.collision.width > obstacles[i].rp_collision.x) {
+                            bug.canMoveRight = false;
+                            bug.canMoveDown = true;
+                            bug.canMoveUp = true;
+                            bug.canMoveLeft = true;
 
+                        }
                     }
                 } else {
                     bug.canMoveRight = true;
@@ -62,7 +67,7 @@ public class GameLogic {
     }
 
     public static void updateScore(float shift ){
-        score += shift / 100;
+        score += shift / 50;
     }
 
     public static float calculateShift(float shift){

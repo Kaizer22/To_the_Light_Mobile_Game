@@ -14,12 +14,15 @@ public class GameWorld {
         bug = new Bug(screenWidth/2,screenHeight/2,pxSize*4);
         background = new Background(0,0,screenHeight);
         shift = 3; //3
-        obstacles = new Obstacle[6];
+        obstacles = new Obstacle[5];
         obstacles[0] = new Obstacle(screenWidth,screenHeight,0,pxSize*4);
         for (int i = 1; i < obstacles.length; i++) {
             obstacles[i] = new Obstacle(screenWidth,screenHeight,0,obstacles[i-1].y+pxSize*5);
 
         }
+
+        GameLogic.score = 1;
+        GameLogic.scoreFactor = 10;
     }
 
     public void update(){

@@ -25,11 +25,11 @@ public class Bug {
         this.y = y;
         this.size = size;
         input_borders = new Rectangle(x,y,size,size);
-        collision = new Rectangle(x + size/3,y + size/4,size/(float)(2.7),size/(float)(2.2)); //Цифры получены экспериментальным путем
+        collision = new Rectangle(x + size/(float)(2.8),y + size/4,size/(float)(3.2),size/(float)(2.6)); //Цифры получены экспериментальным путем
     }
 
     public void setPosition(float x, float y){
-        //System.out.println("Bug pos" + this.x + "^" + this.y + " Input " + x + "^" + y);
+
         if (this.y+size/2>y && canMoveDown){
             this.y = y-size/2;
         }else if (this.y+ size/2<y && canMoveUp){
@@ -43,13 +43,13 @@ public class Bug {
         }
 
         input_borders.setPosition(this.x,this.y);
-        collision.setPosition(this.x + size/(float)(3),this.y + size/4);
+        collision.setPosition(this.x + size/(float)(2.8),this.y + size/4);
     }
 
     public void setY(float y){
         this.y = y;
         input_borders.setPosition(x,this.y);
-        collision.setPosition(x + size/(float)(3),this.y + size/4);
+        collision.setPosition(x + size/(float)(2.8),this.y + size/4);
 
     }
 

@@ -43,9 +43,9 @@ public class InputHandler implements InputProcessor {  // разные точк�
             case IN_GAME:
             {
                 bufY = (int)(g.getScreenHeight()-screenY);
-                if (iBug.input_borders.contains(screenX,bufY)){
-                    isBugClicked = true;
-                }
+                if (g.button_pause.isTouchDown(screenX,bufY)){
+
+                }else if (g.button_music.isTouchDown(screenX,bufY)){}
             }
         }
 
@@ -78,7 +78,13 @@ public class InputHandler implements InputProcessor {  // разные точк�
             }
             case IN_GAME:
             {
-                isBugClicked = false;
+
+                if (g.isPlaying) {
+                    bufY = (int) (g.getScreenHeight() - screenY);
+                    if (g.button_pause.isTouchUp(screenX, bufY)) {
+                        g.setPause();
+                    }
+                }
             }
         }
         return false;
@@ -99,12 +105,14 @@ public class InputHandler implements InputProcessor {  // разные точк�
             {break;}
             case IN_GAME:
             {
-                int bufX = Gdx.input.getX(pointer);
 
-                bufY = (int)(g.getScreenHeight()-Gdx.input.getY(pointer));
-                if (iBug.input_borders.contains(bufX,bufY)){ //&& isBugClicked){
-                    iBug.setPosition(bufX,bufY);
+                if (g.isPlaying){
+                    bufY = (int) (g.getScreenHeight()-screenY);
+                    if (iBug.input_borders.contains(screenX,bufY)){
+                        iBug.setPosition(screenX,bufY);
+                    }
                 }
+
             }
         }
 

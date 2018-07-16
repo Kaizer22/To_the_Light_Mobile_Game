@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.helpers.GamePreferences;
 import com.mygdx.helpers.ImageManager;
 import com.mygdx.helpers.InputHandler;
 import com.mygdx.helpers.SoundManager;
@@ -19,6 +20,7 @@ public class ToTheLightGame extends Game {
 	ImageManager iM;
 	SoundManager sM;
 	InputHandler iH;
+	GamePreferences gP;
 
 	
 	@Override
@@ -26,6 +28,7 @@ public class ToTheLightGame extends Game {
 		batch = new SpriteBatch();
 		iM = new ImageManager();
 		iH = new InputHandler();
+		gP = new GamePreferences();
 		this.setScreen(new MenuScreen(this));
 
 	}
