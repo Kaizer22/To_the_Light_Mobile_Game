@@ -2,7 +2,6 @@ package com.mygdx.helpers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
@@ -20,9 +19,11 @@ public class ImageManager {
         Animation menu_bg_effect;
         Animation bug_move;
         Animation coin;
+        Animation death_screen;
 
         void initializeGameplay(){
             bug_move = initAnim("gameplay/bug.png",64,64,0.08f);
+            death_screen = initAnim("gameplay/on_death_bg.png",154,110,0.9f);
         }
 
         void initializeMenu(){
@@ -45,22 +46,23 @@ public class ImageManager {
             TextureRegion[][] tmp = TextureRegion.split(bug,width,height);
             TextureRegion[] tx = new TextureRegion[tmp.length*tmp[0].length];
             int k = 0;
-            for (int i = 0; i < tmp.length; i++) {
-                for (int j = 0; j < tmp[i].length ; j++) {
-                    tx[k] = tmp[i][j];
+            for (TextureRegion[] aTmp : tmp) {
+                for (TextureRegion anATmp : aTmp) {
+                    tx[k] = anATmp;
                     k++;
                 }
             }
             return new Animation(duration,tx);
         }
 
+
     }
 
     private AnimationManger animator;
 
     private Map<String,TextureRegion> textureRegions;
-    Texture bs;
-    Texture bp;
+    private Texture texture1;
+
 
     //TextureAtlas obstacles;
     //TextureAtlas backgrounds;
@@ -73,22 +75,24 @@ public class ImageManager {
     }
 
     public void initializeMenu() {
-            animator.initializeMenu();
+        animator.initializeMenu();
 
         textureRegions.put("bg_effect",new TextureRegion(new Texture("bg_effect.png")));
-            textureRegions.put("logo",new TextureRegion(new Texture("logo.png")));
-            bs = new Texture("buttons.png");
-        TextureRegion tmp[][] = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/6);
-            textureRegions.put("button_shopUp",tmp[0][0]);
-            textureRegions.put("button_shopDown",tmp[1][0]);
-            textureRegions.put("button_exitUp",tmp[2][0]);
-            textureRegions.put("button_exitDown",tmp[3][0]);
-            textureRegions.put("button_musicOn",tmp[4][0]);
-            textureRegions.put("button_musicOff",tmp[5][0]);
-            bp = new Texture("button_play.png");
-        tmp = TextureRegion.split(bp,bp.getWidth(),bp.getHeight()/2);
-            textureRegions.put("button_playUp",tmp[0][0]);
-            textureRegions.put("button_playDown",tmp[1][0]);
+        textureRegions.put("logo",new TextureRegion(new Texture("logo.png")));
+
+        texture1 = new Texture("buttons.png");
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
+        textureRegions.put("button_shopUp",tmp[0][0]);
+        textureRegions.put("button_shopDown",tmp[1][0]);
+        textureRegions.put("button_exitUp",tmp[2][0]);
+        textureRegions.put("button_exitDown",tmp[3][0]);
+        textureRegions.put("button_musicOn",tmp[4][0]);
+        textureRegions.put("button_musicOff",tmp[5][0]);
+
+        texture1 = new Texture("button_play.png");
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/2);
+        textureRegions.put("button_playUp",tmp[0][0]);
+        textureRegions.put("button_playDown",tmp[1][0]);
 
     }
 
@@ -98,21 +102,46 @@ public class ImageManager {
         textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
         textureRegions.put("bricks",new TextureRegion(new Texture("gameplay/bricks.png")));
 
-        textureRegions.put("wood",new TextureRegion(new Texture("gameplay/wood.png")));
-        textureRegions.put("stone",new TextureRegion(new Texture("gameplay/stone.png")));
-        textureRegions.put("sharp",new TextureRegion(new Texture("gameplay/sharp.png")));
+
+        texture1 = new Texture("gameplay/blocks.png");
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/5);
+        textureRegions.put("wood",tmp[0][0]);
+        textureRegions.put("stone",tmp[1][0]);
+        textureRegions.put("sharp",tmp[2][0]);
+        textureRegions.put("tube_blue",tmp[3][0]);
+        textureRegions.put("tube_red",tmp[4][0]);
+
 
         textureRegions.put("frame", new TextureRegion(new Texture("gameplay/frame.png")));
+        textureRegions.put("bug_bg", new TextureRegion(new Texture("gameplay/bug_bg.png")));
 
-        bs = new Texture("buttons.png");
-        TextureRegion tmp[][] = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/6);
+        texture1 = new Texture("buttons.png");
+         tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
         textureRegions.put("button_musicOn",tmp[4][0]);
         textureRegions.put("button_musicOff",tmp[5][0]);
 
-        bs = new Texture("gameplay/button_pause.png");
-        tmp = TextureRegion.split(bs,bs.getWidth(),bs.getHeight()/2);
+        texture1 = new Texture("gameplay/button_pause.png");
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/2);
         textureRegions.put("button_pauseUp",tmp[0][0]);
         textureRegions.put("button_pauseDown",tmp[1][0]);
+
+        texture1 = new Texture("gameplay/menu_pause_buttons.png");
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/4);
+        textureRegions.put("button_resumeUp",tmp[0][0]);
+        textureRegions.put("button_resumeDown",tmp[1][0]);
+        textureRegions.put("button_pauseExitUp",tmp[2][0]);
+        textureRegions.put("button_pauseExitDown",tmp[3][0]);
+
+        texture1 = new Texture("gameplay/on_death_button_watchAds.png");
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/2);
+        textureRegions.put("button_watchAdsUp",tmp[0][0]);
+        textureRegions.put("button_watchAdsDown",tmp[1][0]);
+
+        texture1 = new Texture("gameplay/on_death_button_restart.png");
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/2);
+        textureRegions.put("button_restartUp",tmp[0][0]);
+        textureRegions.put("button_restartDown",tmp[1][0]);
+
 
 
         textureRegions.put("on_pause_bg", new TextureRegion(new Texture("gameplay/on_pause_bg.png")));
@@ -125,7 +154,7 @@ public class ImageManager {
 
     public void dispose(){
         textureRegions.clear();
-    } //TODO узнать как TextureRegion s влияют на производительность, и нужен ли здесь .dispose()
+    }
 
 
 
@@ -159,12 +188,20 @@ public class ImageManager {
     }
     public TextureRegion getButton_PauseUp(){return textureRegions.get("button_pauseUp");}
     public TextureRegion getButton_PauseDown(){return textureRegions.get("button_pauseDown");}
+    public TextureRegion getButton_ResumeUp(){return textureRegions.get("button_resumeUp");}
+    public TextureRegion getButton_ResumeDown(){return textureRegions.get("button_resumeDown");}
+    public TextureRegion getButton_PauseExitUp(){return textureRegions.get("button_pauseExitUp");}
+    public TextureRegion getButton_PauseExitDown(){return textureRegions.get("button_pauseExitDown");}
+    public TextureRegion getButton_WatchAdsUp(){return textureRegions.get("button_watchAdsUp");}
+    public TextureRegion getButton_WatchAdsDown(){return textureRegions.get("button_watchAdsDown");}
+    public TextureRegion getButton_RestartUp(){return textureRegions.get("button_restartUp");}
+    public TextureRegion getButton_RestartDown(){return textureRegions.get("button_restartDown");}
 
     public TextureRegion getOnPauseBg(){return textureRegions.get("on_pause_bg");}
 
 
-    public TextureRegion getColl(){return textureRegions.get("coll");}
-    public TextureRegion getBColl(){return textureRegions.get("bcoll");}
+    //public TextureRegion getColl(){return textureRegions.get("coll");}
+    //public TextureRegion getBColl(){return textureRegions.get("bcoll");}
 
     public TextureRegion getFrameEffect(){return textureRegions.get("frame");}
 
@@ -176,9 +213,14 @@ public class ImageManager {
         return (TextureRegion) animator.menu_bg_effect.getKeyFrame(stateTime,true);
     }
 
+    public TextureRegion getDeathScreenCurrentFrame(float stateTime){
+        return (TextureRegion) animator.death_screen.getKeyFrame(stateTime,true);
+    }
+
     public TextureRegion getBugCurrentFrame(float stateTime){
         return (TextureRegion) animator.bug_move.getKeyFrame(stateTime,true);
     }
+    public TextureRegion getBugBackground(){return textureRegions.get("bug_bg");}
 
     public TextureRegion getGameplayBackground(String type){
         return textureRegions.get(type);

@@ -52,7 +52,7 @@ public class Obstacle {
         }
         lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
         rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
-        switch (r.nextInt(3)){
+        switch (r.nextInt(5)){
             case 0:
                 t = Type.WOOD;
                 break;
@@ -61,6 +61,13 @@ public class Obstacle {
                 break;
             case 2:
                 t = Type.SHARP;
+                break;
+            case 3:
+                t = Type.TUBE_BLUE;
+                break;
+            case 4:
+                t = Type.TUBE_RED;
+                break;
         }
     }
 
@@ -73,7 +80,7 @@ public class Obstacle {
         if (y < -blockSize*2){ //Коэффициент 2 для того, чтобы препятствие могло сдвинуть жука до смертельной отметки ( полное исчезновение с экрана )
             y = blockSize*24;
 
-            switch (r.nextInt(3)){  //TODO добавить больше типов препятствий
+            switch (r.nextInt(5)){  //TODO добавить подвижное по X препятствие
                 case 0:
                     t = Type.WOOD;
                     break;
@@ -82,6 +89,13 @@ public class Obstacle {
                     break;
                 case 2:
                     t = Type.SHARP;
+                    break;
+                case 3:
+                    t = Type.TUBE_BLUE;
+                    break;
+                case 4:
+                    t = Type.TUBE_RED;
+                    break;
             }
 
             int lp = r.nextInt(8)+1;
@@ -111,6 +125,6 @@ public class Obstacle {
     }
 
     enum Type {
-        WOOD, STONE, SHARP;
+        WOOD, STONE, SHARP, TUBE_RED, TUBE_BLUE;
     }
 }

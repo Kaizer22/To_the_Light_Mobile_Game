@@ -43,9 +43,13 @@ public class InputHandler implements InputProcessor {  // разные точк�
             case IN_GAME:
             {
                 bufY = (int)(g.getScreenHeight()-screenY);
-                if (g.button_pause.isTouchDown(screenX,bufY)){
-
-                }else if (g.button_music.isTouchDown(screenX,bufY)){}
+                if (g.isPlaying) {
+                    if (g.button_pause.isTouchDown(screenX, bufY)) {}
+                    else if (g.button_music.isTouchDown(screenX, bufY)) {}
+                }else if (g.onPause){
+                    if (g.button_resume.isTouchDown(screenX, bufY)) {}
+                    else if (g.button_exit.isTouchDown(screenX, bufY)){}
+                }
             }
         }
 
@@ -78,11 +82,16 @@ public class InputHandler implements InputProcessor {  // разные точк�
             }
             case IN_GAME:
             {
-
+                bufY = (int) (g.getScreenHeight() - screenY);
                 if (g.isPlaying) {
-                    bufY = (int) (g.getScreenHeight() - screenY);
                     if (g.button_pause.isTouchUp(screenX, bufY)) {
                         g.setPause();
+                    }
+                }else if(g.onPause){
+                    if (g.button_resume.isTouchUp(screenX,bufY)){
+                        g.returnToGame();
+                    }else if (g.button_exit.isTouchUp(screenX,bufY)){
+                        g.toMainMenu();
                     }
                 }
             }

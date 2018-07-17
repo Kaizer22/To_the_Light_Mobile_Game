@@ -25,7 +25,7 @@ public class GameplayScreen implements Screen {
     public MyButton button_music;
     public MyButton button_pause;
     public MyButton button_resume;
-    public MyButton button_continue;
+    public MyButton button_watch_ads;
     public MyButton button_exit;
 
     BitmapFont pixelFont;
@@ -68,6 +68,8 @@ public class GameplayScreen implements Screen {
             if (!renderer.update()) {
                 isPlaying = false;
                 isDeath = true;
+                //button_exit = new MyButton();
+                //button_watch_ads = new MyButton();
             }
         }
 
@@ -80,7 +82,7 @@ public class GameplayScreen implements Screen {
         }else if (isDeath){
             renderer.drawWorld(0f);
             drawUI();
-            drawPauseScreen();
+            drawDeathScreen();
 
         }else if (onPause){
             renderer.drawWorld(0f);
@@ -101,10 +103,16 @@ public class GameplayScreen implements Screen {
 
     private void drawPauseScreen(){
         game.batch.draw(game.iM.getOnPauseBg(),0,0,screenWidth,screenHeight);
+        button_resume.draw(game.batch);
+        button_exit.draw(game.batch);
     }
 
     private void drawDeathScreen(){
         game.batch.draw(game.iM.getOnPauseBg(),0,0,screenWidth,screenHeight);
+        game.batch.draw(game.iM.getDeathScreenCurrentFrame(stateTime), pxSize,screenHeight/2-pxSize*4,pxSize*10,pxSize*8);
+       // button_watch_ads.draw(game.batch);
+       // button_exit.draw(game.batch);
+
     }
 
     public float getScreenHeight() {
@@ -124,6 +132,8 @@ public class GameplayScreen implements Screen {
 
         pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
         pixelFont.getData().setScale(width/300);
+        System.out.println(pixelFont.getCapHeight() + " :: " + pixelFont.getLineHeight() + "_______"+ pxSize);
+        System.out.println(width + "-_)_" + height);
 
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
         button_pause = new MyButton(screenWidth - pxSize*2,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_PauseUp(),game.iM.getButton_PauseDown());
@@ -148,12 +158,25 @@ public class GameplayScreen implements Screen {
     }
 
     @Override
-    public void dispose() {
+    public void dispose(){
         game.iM.dispose();
     }
 
     public void setPause() {
         isPlaying = false;
         onPause = true;
+        button_resume = new MyButton(screenWidth/2-pxSize*3,screenHeight/2,pxSize*6,pxSize*6,game.iM.getButton_ResumeUp(),game.iM.getButton_ResumeDown());
+        button_exit = new MyButton(screenWidth/2-pxSize*3,screenHeight/2-pxSize*6,pxSize*6,pxSize*6,game.iM.getButton_PauseExitUp(),game.iM.getButton_PauseExitDown());
+    }
+
+    public void returnToGame(){
+        onPause = false;
+        isPlaying = true;
+    }
+
+    public void toMainMenu(){
+        dispose();
+        MenuScreen m = new MenuScreen(game);
+        game.setScreen(m);
     }
 }

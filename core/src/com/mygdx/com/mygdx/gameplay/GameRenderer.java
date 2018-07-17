@@ -73,11 +73,12 @@ public class GameRenderer {
         float bug_x = world.bug.x;
         float bug_y = world.bug.y;
         float bug_size = world.bug.size;
+        batch.draw(imageManager.getBugBackground(),bug_x,bug_y,bug_size,bug_size);
         batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
 
 
         //TODO del this
-        batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
+        //batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
 
     }
     private void drawBackground(){
