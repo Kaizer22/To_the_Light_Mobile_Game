@@ -22,7 +22,7 @@ public class ImageManager {
         Animation death_screen;
 
         void initializeGameplay(){
-            bug_move = initAnim("gameplay/bug.png",64,64,0.08f);
+            bug_move = initAnim("gameplay/bug.png",64,64,0.02f);
             death_screen = initAnim("gameplay/on_death_bg.png",154,110,0.9f);
         }
 

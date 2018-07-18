@@ -10,12 +10,11 @@ import com.mygdx.helpers.ImageManager;
 
 public class GameRenderer {
     private GameWorld world;
-    ImageManager imageManager;
+
     SpriteBatch batch;
     float screenWidth, screenHeight, pxSize;
 
-    public GameRenderer(ImageManager iM, SpriteBatch b, float sW, float sH, float pxS) {
-        imageManager = iM;
+    public GameRenderer(SpriteBatch b, float sW, float sH, float pxS) {
         batch = b;
         screenHeight = sH;
         screenWidth = sW;
@@ -31,15 +30,19 @@ public class GameRenderer {
         return world.bug.isAlive;
     }
 
-    public void drawWorld(float stateTime){
+    public void restart(){
+        world = new GameWorld(screenWidth,screenHeight,pxSize);
+    }
 
-        drawBackground();
-        drawBug(stateTime);
-        drawObstacles();
+    public void drawWorld(float stateTime, ImageManager imageManager){
+
+        drawBackground(imageManager);
+        drawBug(stateTime,imageManager);
+        drawObstacles(imageManager);
 
     }
 
-    private void drawObstacles(){
+    private void drawObstacles(ImageManager imageManager){
         String type;
         int obstacles = world.obstacles.length;
         int lp,rp;
@@ -69,7 +72,7 @@ public class GameRenderer {
         }
 
     }
-    private void drawBug(float stateTime){
+    private void drawBug(float stateTime, ImageManager imageManager){
         float bug_x = world.bug.x;
         float bug_y = world.bug.y;
         float bug_size = world.bug.size;
@@ -81,7 +84,7 @@ public class GameRenderer {
         //batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
 
     }
-    private void drawBackground(){
+    private void drawBackground(ImageManager imageManager){
         String bg1 = world.background.section1.toString().toLowerCase();
         String bg2 = world.background.section2.toString().toLowerCase();
 

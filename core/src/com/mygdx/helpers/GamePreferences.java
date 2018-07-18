@@ -21,10 +21,16 @@ public class GamePreferences {
         return null;
     }
     
-    public void clearPreferences(){}
+    public void clearPreferences(){
+        preferences.clear();
+        preferences.flush();
+    }
     
-    public void saveHighscore(){}
+    public void saveHighscore(int score){
+        preferences.putInteger("highscore",score);
+        preferences.flush();
+    }
     public int loadHighscore(){
-        return 0;
+        return preferences.getInteger("highscore");
     }
 }

@@ -27,8 +27,10 @@ public class GameplayScreen implements Screen {
     public MyButton button_resume;
     public MyButton button_watch_ads;
     public MyButton button_exit;
+    public MyButton button_restart;
 
-    BitmapFont pixelFont;
+    private BitmapFont scoreFont;
+    private BitmapFont highscoreFont;
 
     private float stateTime = 0f;
 
@@ -36,14 +38,17 @@ public class GameplayScreen implements Screen {
     public boolean onPause = false;
     public boolean isDeath = false;
 
+    String bufString;
+
     public GameplayScreen (ToTheLightGame toTheLightGame){
         game = toTheLightGame;
         camera = new OrthographicCamera();
 
-
-
+        //game.gP.clearPreferences();
 
         game.iM.initializeGameplay();
+        GameLogic.highscore = game.gP.loadHighscore();
+
 
     }
 
@@ -68,8 +73,10 @@ public class GameplayScreen implements Screen {
             if (!renderer.update()) {
                 isPlaying = false;
                 isDeath = true;
-                //button_exit = new MyButton();
-                //button_watch_ads = new MyButton();
+
+                highscoreFont.getData().setScale(screenWidth/300);
+                button_restart = new MyButton(pxSize*(float)(3)+pxSize*3,screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_RestartUp(),game.iM.getButton_RestartDown());
+                button_watch_ads = new MyButton(pxSize*(float)(3),screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_WatchAdsUp(),game.iM.getButton_WatchAdsDown());
             }
         }
 
@@ -77,15 +84,15 @@ public class GameplayScreen implements Screen {
         game.batch.begin();
 
         if (isPlaying) {
-            renderer.drawWorld(stateTime);
+            renderer.drawWorld(stateTime,game.iM);
             drawUI();
         }else if (isDeath){
-            renderer.drawWorld(0f);
+            renderer.drawWorld(0f,game.iM);
             drawUI();
             drawDeathScreen();
 
         }else if (onPause){
-            renderer.drawWorld(0f);
+            renderer.drawWorld(0f,game.iM);
             drawUI();
             drawPauseScreen();
         }
@@ -98,20 +105,33 @@ public class GameplayScreen implements Screen {
         game.batch.draw(game.iM.getFrameEffect(),0,0,screenWidth,screenHeight);
         button_music.draw(game.batch);
         button_pause.draw(game.batch);
-        pixelFont.draw(game.batch,""+(int)GameLogic.score,screenWidth/2-pxSize*2,screenHeight - pxSize);
+
+        bufString = "" + (int)GameLogic.score;
+        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight - pxSize);
+
+        bufString = "max " + GameLogic.highscore;
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight-2*pxSize);
     }
 
     private void drawPauseScreen(){
         game.batch.draw(game.iM.getOnPauseBg(),0,0,screenWidth,screenHeight);
+
         button_resume.draw(game.batch);
         button_exit.draw(game.batch);
     }
 
     private void drawDeathScreen(){
         game.batch.draw(game.iM.getOnPauseBg(),0,0,screenWidth,screenHeight);
-        game.batch.draw(game.iM.getDeathScreenCurrentFrame(stateTime), pxSize,screenHeight/2-pxSize*4,pxSize*10,pxSize*8);
-       // button_watch_ads.draw(game.batch);
-       // button_exit.draw(game.batch);
+        game.batch.draw(game.iM.getDeathScreenCurrentFrame(stateTime), pxSize*(float)(0.75),screenHeight/2-pxSize*(float)(3.75),pxSize*(float)(10.5),pxSize*(float)(7.5));
+
+        bufString = "" + (int)GameLogic.score;
+        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight/2+(float)(3.5)*pxSize);
+
+        bufString = "max " + GameLogic.highscore;
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight/2-(float)(3.5)*pxSize);
+
+        button_watch_ads.draw(game.batch);
+        button_restart.draw(game.batch);
 
     }
 
@@ -122,6 +142,7 @@ public class GameplayScreen implements Screen {
     public float getScreenWidth() {
         return screenWidth;
     }
+
     @Override
     public void resize(int width, int height){
         camera.setToOrtho(false,width,height);
@@ -130,15 +151,19 @@ public class GameplayScreen implements Screen {
         screenWidth = width;
         pxSize = width/12;
 
-        pixelFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
-        pixelFont.getData().setScale(width/300);
-        System.out.println(pixelFont.getCapHeight() + " :: " + pixelFont.getLineHeight() + "_______"+ pxSize);
-        System.out.println(width + "-_)_" + height);
+
+        scoreFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
+        scoreFont.getData().setScale(width/300);
+
+        highscoreFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
+        highscoreFont.getData().setScale(width/400);
+        //System.out.println(scoreFont.getCapHeight() + " :: " + scoreFont.getLineHeight() + "_______"+ pxSize);
+        //System.out.println(width + "-_)_" + height);
 
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
         button_pause = new MyButton(screenWidth - pxSize*2,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_PauseUp(),game.iM.getButton_PauseDown());
 
-        renderer = new GameRenderer(game.iM,game.batch,screenWidth,screenHeight,pxSize);
+        renderer = new GameRenderer(game.batch,screenWidth,screenHeight,pxSize);
         game.iH.setCondition_Gameplay(this);
     }
 
@@ -172,6 +197,24 @@ public class GameplayScreen implements Screen {
     public void returnToGame(){
         onPause = false;
         isPlaying = true;
+        scoreFont.getData().setScale(screenWidth/300);
+        highscoreFont.getData().setScale(screenWidth/600);
+    }
+
+    public void restartGame(){
+        isPlaying = true;
+        isDeath = false;
+
+        if (GameLogic.highscore < (int)GameLogic.score){
+            game.gP.saveHighscore((int)GameLogic.score);
+            GameLogic.highscore = (int)GameLogic.score;
+        }
+
+        renderer.restart();
+        game.iH.setCondition_Gameplay(this);
+        highscoreFont.getData().setScale(screenWidth/400);
+
+
     }
 
     public void toMainMenu(){
