@@ -74,7 +74,6 @@ public class GameplayScreen implements Screen {
                 isPlaying = false;
                 isDeath = true;
 
-                highscoreFont.getData().setScale(screenWidth/300);
                 button_restart = new MyButton(pxSize*(float)(3)+pxSize*3,screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_RestartUp(),game.iM.getButton_RestartDown());
                 button_watch_ads = new MyButton(pxSize*(float)(3),screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_WatchAdsUp(),game.iM.getButton_WatchAdsDown());
             }
@@ -110,7 +109,7 @@ public class GameplayScreen implements Screen {
         scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight - pxSize);
 
         bufString = "max " + GameLogic.highscore;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight-2*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-2*pxSize);
     }
 
     private void drawPauseScreen(){
@@ -128,7 +127,7 @@ public class GameplayScreen implements Screen {
         scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight/2+(float)(3.5)*pxSize);
 
         bufString = "max " + GameLogic.highscore;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight/2-(float)(3.5)*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight/2-(float)(1.15)*pxSize);
 
         button_watch_ads.draw(game.batch);
         button_restart.draw(game.batch);
@@ -156,7 +155,7 @@ public class GameplayScreen implements Screen {
         scoreFont.getData().setScale(width/300);
 
         highscoreFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
-        highscoreFont.getData().setScale(width/400);
+        highscoreFont.getData().setScale(width/500);
         //System.out.println(scoreFont.getCapHeight() + " :: " + scoreFont.getLineHeight() + "_______"+ pxSize);
         //System.out.println(width + "-_)_" + height);
 
@@ -197,8 +196,7 @@ public class GameplayScreen implements Screen {
     public void returnToGame(){
         onPause = false;
         isPlaying = true;
-        scoreFont.getData().setScale(screenWidth/300);
-        highscoreFont.getData().setScale(screenWidth/600);
+
     }
 
     public void restartGame(){
@@ -212,7 +210,6 @@ public class GameplayScreen implements Screen {
 
         renderer.restart();
         game.iH.setCondition_Gameplay(this);
-        highscoreFont.getData().setScale(screenWidth/400);
 
 
     }

@@ -29,6 +29,7 @@ public class ToTheLightGame extends Game {
 		iM = new ImageManager();
 		iH = new InputHandler();
 		gP = new GamePreferences();
+		//gP.clearPreferences();
 		this.setScreen(new MenuScreen(this));
 
 	}
