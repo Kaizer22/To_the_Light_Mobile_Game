@@ -25,6 +25,13 @@ public class GameWorld {
         GameLogic.scoreFactor = 10;
     }
 
+    public GameWorld(float bugX, float bugY, float currentShift,Obstacle[] obstacles, float screenHeight,float pxSize){
+        bug = new Bug(bugX,bugY,pxSize*4);
+        shift = currentShift;
+        this.obstacles = obstacles;
+        background = new Background(0,0,screenHeight);
+    }
+
     public void update(){
         shift = GameLogic.calculateShift(shift);
         background.update(shift);
@@ -45,4 +52,6 @@ public class GameWorld {
         }
        GameLogic.updateScore(shift);
     }
+
+
 }

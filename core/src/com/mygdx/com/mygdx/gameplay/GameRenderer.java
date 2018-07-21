@@ -2,6 +2,7 @@ package com.mygdx.com.mygdx.gameplay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.helpers.ImageManager;
 
 /**
@@ -32,6 +33,14 @@ public class GameRenderer {
 
     public void restart(){
         world = new GameWorld(screenWidth,screenHeight,pxSize);
+    }
+
+    public void setWorld(GameWorld world){
+        this.world = world;
+    }
+
+    public GameWorld getWorld() {
+        return world;
     }
 
     public void drawWorld(float stateTime, ImageManager imageManager){
@@ -100,5 +109,9 @@ public class GameRenderer {
 
     public Bug getBug(){
         return world.bug;
+    }
+    public Obstacle[] getObstacles(){return world.obstacles;}
+    public float getShift(){
+        return world.shift;
     }
 }

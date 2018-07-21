@@ -38,6 +38,8 @@ public class GameplayScreen implements Screen {
     public boolean onPause = false;
     public boolean isDeath = false;
 
+    private boolean mustBeLoaded = false;
+
     String bufString;
 
     public GameplayScreen (ToTheLightGame toTheLightGame){
@@ -48,7 +50,7 @@ public class GameplayScreen implements Screen {
 
         game.iM.initializeGameplay();
         GameLogic.highscore = game.gP.loadHighscore();
-
+        System.out.println("_________________________point1_________________");
 
     }
 
@@ -162,23 +164,32 @@ public class GameplayScreen implements Screen {
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
         button_pause = new MyButton(screenWidth - pxSize*2,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_PauseUp(),game.iM.getButton_PauseDown());
 
+        System.out.println("_____________________point2_____________________");
         renderer = new GameRenderer(game.batch,screenWidth,screenHeight,pxSize);
+
+        if (mustBeLoaded){
+            renderer.setWorld(game.gP.loadWorld(screenWidth,screenHeight,pxSize));
+            mustBeLoaded = false;
+        }
+
         game.iH.setCondition_Gameplay(this);
     }
 
     @Override
     public void pause() {
+        game.gP.saveWorld(renderer.getBug(),renderer.getObstacles(),renderer.getShift());
+        System.out.println("_______________________point3___________________");
 
     }
 
     @Override
     public void resume() {
-
+        mustBeLoaded = true;
+        System.out.println("_______________________point4___________________");
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override

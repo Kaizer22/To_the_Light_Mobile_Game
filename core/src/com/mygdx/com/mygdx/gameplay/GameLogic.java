@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class GameLogic {
     public static double score = 1;
-    static int scoreFactor = 10;
+    public static int scoreFactor = 10;
     public static int highscore;
     public static void checkCollisions(Obstacle[] obstacles, Bug bug){
         for (int i = 0; i < obstacles.length ; i++) {
