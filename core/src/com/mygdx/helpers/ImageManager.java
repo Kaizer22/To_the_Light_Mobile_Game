@@ -18,12 +18,15 @@ public class ImageManager {
         Animation menu_bg;
         Animation menu_bg_effect;
         Animation bug_move;
+        Animation saw;
         Animation coin;
         Animation death_screen;
 
         void initializeGameplay(){
             bug_move = initAnim("gameplay/bug.png",64,64,0.02f);
             death_screen = initAnim("gameplay/on_death_bg.png",154,110,0.9f);
+            saw = initAnim("gameplay/saw_anim.png",22,22,0.01f);
+            coin = initAnim("gameplay/coin.png",22,22,0.06f);
         }
 
         void initializeMenu(){
@@ -104,12 +107,13 @@ public class ImageManager {
 
 
         texture1 = new Texture("gameplay/blocks.png");
-        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/5);
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
         textureRegions.put("wood",tmp[0][0]);
         textureRegions.put("stone",tmp[1][0]);
         textureRegions.put("sharp",tmp[2][0]);
         textureRegions.put("tube_blue",tmp[3][0]);
         textureRegions.put("tube_red",tmp[4][0]);
+        textureRegions.put("saw",tmp[5][0]);
 
 
         textureRegions.put("frame", new TextureRegion(new Texture("gameplay/frame.png")));
@@ -200,8 +204,8 @@ public class ImageManager {
     public TextureRegion getOnPauseBg(){return textureRegions.get("on_pause_bg");}
 
 
-    //public TextureRegion getColl(){return textureRegions.get("coll");}
-    //public TextureRegion getBColl(){return textureRegions.get("bcoll");}
+    public TextureRegion getColl(){return textureRegions.get("coll");}
+    public TextureRegion getBColl(){return textureRegions.get("bcoll");}
 
     public TextureRegion getFrameEffect(){return textureRegions.get("frame");}
 
@@ -221,6 +225,14 @@ public class ImageManager {
         return (TextureRegion) animator.bug_move.getKeyFrame(stateTime,true);
     }
     public TextureRegion getBugBackground(){return textureRegions.get("bug_bg");}
+
+    public TextureRegion getSawCurrentFrame(float stateTime){
+        return (TextureRegion) animator.saw.getKeyFrame(stateTime,true);
+    }
+
+    public TextureRegion getCoinCurrentFrame(float stateTime){
+        return (TextureRegion) animator.coin.getKeyFrame(stateTime,true);
+    }
 
     public TextureRegion getGameplayBackground(String type){
         return textureRegions.get(type);

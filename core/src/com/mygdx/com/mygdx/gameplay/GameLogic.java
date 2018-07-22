@@ -16,7 +16,7 @@ public class GameLogic {
 
             if (Math.abs(Math.max(obstacles[i].y,bug.collision.y) - Math.min(obstacles[i].y,bug.collision.y)) < bug.size/2){
                 if (collides(obstacles[i],bug)) {
-                    if (obstacles[i].t == Obstacle.Type.SHARP){
+                    if (obstacles[i].t == Obstacle.Type.SHARP || obstacles[i].t == Obstacle.Type.SAW ){
                         bug.isAlive = false;
                     } else {
                         if ((obstacles[i].y > bug.collision.y && bug.collision.x < obstacles[i].lp_collision.width) ||
@@ -65,14 +65,22 @@ public class GameLogic {
         }
         return false;
     }
+    public static void collides(Coin coin, Bug bug) {
+        if (Intersector.overlaps(coin.collision,bug.collision)){
+            score += coin.getCost();
+            coin.isVisible = false;
+
+        }
+
+    }
 
     public static void updateScore(float shift ){
-        score += shift / 50;
+        score += shift / 45;
     }
 
     public static float calculateShift(float shift){
 
-        if ((int)score % scoreFactor == 0){
+        if ((int)score > scoreFactor){
             float s;
             s = shift + (float)0.5;
             scoreFactor = (int)(scoreFactor * 1.5);

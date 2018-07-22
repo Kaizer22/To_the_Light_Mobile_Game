@@ -28,6 +28,7 @@ public class Obstacle {
     float width, height;
 
     Type t;
+    boolean isSawGoingLeft;
 
 
     public Obstacle(float screenWidth, float screenHeight,float x_pos, float y_pos){
@@ -40,19 +41,6 @@ public class Obstacle {
 
         r = new Random();
 
-        int lp = r.nextInt(8)+1;
-        int rp = r.nextInt(10-lp)+1;
-        left_plank = new Rectangle[lp];
-        right_plank = new Rectangle[rp];
-
-        for (int i = 0; i < lp; i++) {
-            left_plank[i] = new Rectangle(blockSize*i,y,blockSize,blockSize);
-        }
-        for (int i = 0; i < rp; i++) {
-            right_plank[i] = new Rectangle(width-rp*blockSize+i*blockSize,y,blockSize,blockSize);
-        }
-        lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
-        rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
         switch (r.nextInt(5)){
             case 0:
                 t = WOOD;
@@ -70,6 +58,39 @@ public class Obstacle {
                 t = TUBE_RED;
                 break;
         }
+
+        if (t == SAW){
+            x = r.nextInt((int)width);
+            left_plank = new Rectangle[6];              // Из расчета, что размер блока width/12
+            right_plank = new Rectangle[6];
+
+            for (int i = 0; i < 6; i++) {
+                left_plank[i] = new Rectangle(blockSize * i, y, blockSize, blockSize);
+            }
+            for (int i = 0; i < 6; i++) {
+                right_plank[i] = new Rectangle(width - 6 * blockSize + i * blockSize, y, blockSize, blockSize);
+            }
+
+            lp_collision = new Rectangle(x, y, blockSize, blockSize);
+            rp_collision = new Rectangle(x, y, blockSize, blockSize);
+
+
+        }else {
+            int lp = r.nextInt(8) + 1;
+            int rp = r.nextInt(10 - lp) + 1;
+            left_plank = new Rectangle[lp];
+            right_plank = new Rectangle[rp];
+
+            for (int i = 0; i < lp; i++) {
+                left_plank[i] = new Rectangle(blockSize * i, y, blockSize, blockSize);
+            }
+            for (int i = 0; i < rp; i++) {
+                right_plank[i] = new Rectangle(width - rp * blockSize + i * blockSize, y, blockSize, blockSize);
+            }
+            lp_collision = new Rectangle(0, y, lp * blockSize, blockSize);
+            rp_collision = new Rectangle(width - rp * blockSize, y, rp * blockSize, blockSize);
+        }
+
     }
 
     public Obstacle(float x_pos,float y_pos, String type, int lp, int rp, float pxSize, float screenWidth){
@@ -93,8 +114,13 @@ public class Obstacle {
             right_plank[i] = new Rectangle(width-rp*blockSize+i*blockSize,y,blockSize,blockSize);
         }
 
-        lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
-        rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
+        if (t == SAW) {
+            lp_collision = new Rectangle(x, y, blockSize, blockSize);
+            rp_collision = new Rectangle(x, y, blockSize, blockSize);
+        }else {
+            lp_collision = new Rectangle(0, y, lp * blockSize, blockSize);
+            rp_collision = new Rectangle(width - rp * blockSize, y, rp * blockSize, blockSize);
+        }
     }
 
 
@@ -106,7 +132,8 @@ public class Obstacle {
         if (y < -blockSize*2){ //Коэффициент 2 для того, чтобы препятствие могло сдвинуть жука до смертельной отметки ( полное исчезновение с экрана )
             y = blockSize*24;
 
-            switch (r.nextInt(5)){  //TODO добавить подвижное по X препятствие
+            int n  = (GameLogic.score>1000?6:5); //Пилы начнут появляться после 1000 очков
+            switch (r.nextInt(n)){
                 case 0:
                     t = WOOD;
                     break;
@@ -114,29 +141,52 @@ public class Obstacle {
                     t = STONE;
                     break;
                 case 2:
-                    t = SHARP;
+                    t = TUBE_RED;
                     break;
                 case 3:
                     t = TUBE_BLUE;
                     break;
                 case 4:
-                    t = TUBE_RED;
+                    t = SHARP;
+                    break;
+                case 5:
+                    t = SAW;
                     break;
             }
 
-            int lp = r.nextInt(8)+1;
-            int rp = r.nextInt(10-lp)+1;
-            left_plank = new Rectangle[lp];
-            right_plank = new Rectangle[rp];
+            if (t == SAW){
+                x = r.nextInt((int)width);
+                isSawGoingLeft = r.nextBoolean();
 
-            for (int i = 0; i < lp; i++) {
-                left_plank[i] = new Rectangle(blockSize*i,y,blockSize,blockSize);
+                left_plank = new Rectangle[6];              // Из расчета, что размер блока width/12
+                right_plank = new Rectangle[6];
+
+                for (int i = 0; i < 6; i++) {
+                    left_plank[i] = new Rectangle(blockSize * i, y, blockSize, blockSize);
+                }
+                for (int i = 0; i < 6; i++) {
+                    right_plank[i] = new Rectangle(width - 6 * blockSize + i * blockSize, y, blockSize, blockSize);
+                }
+
+                lp_collision = new Rectangle(x, y, blockSize, blockSize);
+                rp_collision = new Rectangle(x, y, blockSize, blockSize);
+
+
+            }else {
+                int lp = r.nextInt(8) + 1;
+                int rp = r.nextInt(10 - lp) + 1;
+                left_plank = new Rectangle[lp];
+                right_plank = new Rectangle[rp];
+
+                for (int i = 0; i < lp; i++) {
+                    left_plank[i] = new Rectangle(blockSize * i, y, blockSize, blockSize);
+                }
+                for (int i = 0; i < rp; i++) {
+                    right_plank[i] = new Rectangle(width - rp * blockSize + i * blockSize, y, blockSize, blockSize);
+                }
+                lp_collision = new Rectangle(0, y, lp * blockSize, blockSize);
+                rp_collision = new Rectangle(width - rp * blockSize, y, rp * blockSize, blockSize);
             }
-            for (int i = 0; i < rp; i++) {
-                right_plank[i] = new Rectangle(width-rp*blockSize+i*blockSize,y,blockSize,blockSize);
-            }
-            lp_collision = new Rectangle(0,y,lp*blockSize, blockSize);
-            rp_collision = new Rectangle(width-rp*blockSize,y,rp*blockSize,blockSize);
 
         }else{
             for (int i = 0; i < left_plank.length; i++) {
@@ -147,6 +197,22 @@ public class Obstacle {
             }
             rp_collision.y -=shift;
             lp_collision.y -=shift;
+            if (t == SAW) {
+                if (isSawGoingLeft) {
+                    x -= shift / 1.5;
+                    rp_collision.x -= shift / 1.5;
+                    lp_collision.x -= shift / 1.5;
+                }else{
+                    x += shift / 1.5;
+                    rp_collision.x += shift / 1.5;
+                    lp_collision.x += shift / 1.5;
+                }
+                if (rp_collision.x<0){
+                    isSawGoingLeft = false;
+                }else  if (rp_collision.x>width-blockSize){
+                    isSawGoingLeft = true;
+                }
+            }
         }
     }
 
@@ -175,6 +241,6 @@ public class Obstacle {
     }
 
     enum Type {
-        WOOD, STONE, SHARP, TUBE_RED, TUBE_BLUE;
+        WOOD, STONE, SHARP, TUBE_RED, TUBE_BLUE, SAW;
     }
 }

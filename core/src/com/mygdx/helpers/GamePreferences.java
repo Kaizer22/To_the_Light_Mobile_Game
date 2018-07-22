@@ -52,7 +52,7 @@ public class GamePreferences {
             o_x = preferences.getFloat("obstacle_"+ i +"_pos_x");
             o_y = preferences.getFloat("obstacle_"+ i +"_pos_y");
             type = preferences.getString("obstacle_"+ i +"_type");
-            System.out.println("_______________________________________________________________"+type);
+            //System.out.println("_______________________________________________________________"+type);
             lp = preferences.getInteger("obstacle_"+ i +"_lp");
             rp = preferences.getInteger("obstacle_"+ i +"_rp");
             obstacles[i] = new Obstacle(o_x,o_y,type.toUpperCase(),lp,rp,pxSize,screenWidth);

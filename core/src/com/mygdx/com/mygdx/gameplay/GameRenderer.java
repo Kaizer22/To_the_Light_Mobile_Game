@@ -46,12 +46,14 @@ public class GameRenderer {
     public void drawWorld(float stateTime, ImageManager imageManager){
 
         drawBackground(imageManager);
+        drawObstacles(imageManager,stateTime);
         drawBug(stateTime,imageManager);
-        drawObstacles(imageManager);
+        drawCoins(stateTime,imageManager);
+
 
     }
 
-    private void drawObstacles(ImageManager imageManager){
+    private void drawObstacles(ImageManager imageManager, float stateTime){
         String type;
         int obstacles = world.obstacles.length;
         int lp,rp;
@@ -72,6 +74,10 @@ public class GameRenderer {
                 bl_x = world.obstacles[i].right_plank[j].x;
                 bl_y = world.obstacles[i].right_plank[j].y;
                 batch.draw(imageManager.getObstacle(type),bl_x,bl_y,bl_size,bl_size);
+            }
+
+            if  (world.obstacles[i].t == Obstacle.Type.SAW) {
+              batch.draw(imageManager.getSawCurrentFrame(stateTime),world.obstacles[i].x,world.obstacles[i].y,bl_size,bl_size);
             }
 
             //TODO delete this
@@ -105,6 +111,21 @@ public class GameRenderer {
 
         batch.draw(imageManager.getGameplayBackground(bg1), bg_x1,bg_y1,screenWidth,screenHeight);
         batch.draw(imageManager.getGameplayBackground(bg2), bg_x2,bg_y2,screenWidth,screenHeight);
+    }
+    private void drawCoins(float stateTime, ImageManager imageManager){
+        if (world.left.isVisible) {
+            float c_x1 = world.left.x;
+            float c_y1 = world.left.y;
+            batch.draw(imageManager.getCoinCurrentFrame(stateTime), c_x1, c_y1, pxSize, pxSize);
+        }
+
+        if (world.right.isVisible) {
+            float c_x2 = world.right.x;
+            float c_y2 = world.right.y;
+            batch.draw(imageManager.getCoinCurrentFrame(stateTime), c_x2, c_y2, pxSize, pxSize);
+            //TODO del this
+           // batch.draw(imageManager.getBColl(),world.right.collision.x - world.right.size/2,world.right.collision.x - world.right.size/2, world.right.size, world.right.size);
+        }
     }
 
     public Bug getBug(){
