@@ -40,13 +40,16 @@ public class MenuScreen implements Screen {
         game.iH.setCondition_Menu(this);
         game.iM.initializeMenu();
 
+        if(game.sM.isMusicTurnedON)
+            game.sM.playMainTheme();
+
+
         Gdx.input.setInputProcessor(game.iH);
     }
 
     @Override
     public void show() {
-        //TODO добавить музыку
-        //game.sM.playMainTheme();
+
     }
 
     @Override
@@ -107,7 +110,15 @@ public class MenuScreen implements Screen {
         ShopScreen s = new ShopScreen(game);
         game.setScreen(s);
     }
-    public void turnMusic(){}
+    public boolean turnMusic(){
+        if (game.sM.isPlaying()){
+            game.sM.stopMainTheme();
+            return false;
+        }else {
+            game.sM.playMainTheme();
+            return true;
+        }
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -120,7 +131,7 @@ public class MenuScreen implements Screen {
         button_play = new MyButton((screenWidth/2-pxSize*2),(float)(pxSize*8.5) ,pxSize*4,pxSize*4,game.iM.getButton_PlayUp(),game.iM.getButton_PlayDown());
         button_shop = new MyButton((float)(screenWidth/2-pxSize*4.5),(float)(pxSize*5.5),pxSize*3,pxSize*3,game.iM.getButton_ShopUp(),game.iM.getButton_ShopDown());
 
-
+        button_music.isPressed = !game.sM.isPlaying();
 
 
 
@@ -128,6 +139,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
         game.iM.dispose();
     }
 
@@ -137,15 +149,21 @@ public class MenuScreen implements Screen {
 
     @Override
     public void pause() {
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
 
     }
     @Override
     public void resume() {
-
+        game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
+        if (game.sM.isPlaying()){
+            button_music.isPressed = false;
+        }else{
+            button_music.isPressed = true;
+        }
     }
     @Override
     public void hide() {
-
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
     }
 
 

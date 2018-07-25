@@ -13,15 +13,14 @@ import com.mygdx.game.ShopScreen;
  */
 
 public class InputHandler implements InputProcessor {  // разные точки отсчета при рисовании и при обработке ввода
-    Condition c;
-    MenuScreen m;
-    ShopScreen s;
-    GameplayScreen g;
+    private Condition c;
+    private MenuScreen m;
+    private ShopScreen s;
+    private GameplayScreen g;
 
-    Bug iBug;
-    boolean isBugClicked = false;
+    private Bug iBug;
+    private boolean isMusicButtonPressed; //костыль
 
-    public void InputHandler(Screen screen){}
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
@@ -32,12 +31,27 @@ public class InputHandler implements InputProcessor {  // разные точк�
                 bufY = (int)(m.getScreenHeight()-screenY);
                 if (m.button_play.isTouchDown(screenX,bufY)) {
                 }else if (m.button_shop.isTouchDown(screenX,bufY)){
-                }else if (m.button_exit.isTouchDown(screenX,bufY)) {}
+                }else if (m.button_exit.isTouchDown(screenX,bufY)){
+                }else if (m.button_music.isTouchDown(screenX,bufY)){
+                    isMusicButtonPressed = true;
+                }
 
                 break;
             }
             case IN_SHOP:
             {
+                bufY = (int)(s.getScreenHeight()-screenY);
+                if (s.button_exitToMenu.isTouchDown(screenX,bufY)){}
+                else if (s.button_music.isTouchDown(screenX,bufY)){
+                    isMusicButtonPressed = true;
+                }else {
+                    for (int i = 0; i < s.yMax; i++) {
+                        for (int j = 0; j < s.xMax; j++) {
+                            if (s.skins[i][j].inputBorders.contains(screenX, bufY))
+                                s.skins[i][j].isClicked = true;
+                        }
+                    }
+                }
                 break;
             }
             case IN_GAME:
@@ -46,7 +60,9 @@ public class InputHandler implements InputProcessor {  // разные точк�
 
                 if (g.isPlaying) {
                     if (g.button_pause.isTouchDown(screenX, bufY)) {}
-                    else if (g.button_music.isTouchDown(screenX, bufY)) {}
+                    else if (g.button_music.isTouchDown(screenX, bufY)) {
+                        isMusicButtonPressed = true;
+                    }
 
                 }else if(g.isDeath){
                     if (g.button_watch_ads.isTouchDown(screenX,bufY)){}
@@ -77,13 +93,40 @@ public class InputHandler implements InputProcessor {  // разные точк�
                     m.openShop();
                 }else if (m.button_exit.isTouchUp(screenX,bufY)) {
                     m.exit();
+                }else if (isMusicButtonPressed && m.button_music.isTouchUp(screenX,bufY)){
+                    if (m.turnMusic()){
+                        m.button_music.isPressed = false;
+                    }else{
+                        m.button_music.isPressed = true;
+                    }
                 }
+                isMusicButtonPressed = false;
                 break;
 
 
             }
             case IN_SHOP:
             {
+                bufY = (int)(m.getScreenHeight()-screenY);
+                if (s.button_exitToMenu.isTouchUp(screenX,bufY)) {
+                    s.toMainMenu();
+                }else if (isMusicButtonPressed && s.button_music.isTouchUp(screenX,bufY)){
+                    if (s.turnMusic()){
+                        s.button_music.isPressed = false;
+                    }else{
+                        s.button_music.isPressed = true;
+                    }
+                } else {
+                    for (int i = 0; i < s.yMax; i++) {
+                        for (int j = 0; j < s.xMax; j++) {
+                            if (s.skins[i][j].isClicked && s.skins[i][j].inputBorders.contains(screenX,bufY))
+                                s.chooseSkin(j,i);
+                            s.skins[i][j].isClicked = false;
+                        }
+                    }
+
+            }
+                isMusicButtonPressed = false;
                 break;
             }
             case IN_GAME:
@@ -92,8 +135,14 @@ public class InputHandler implements InputProcessor {  // разные точк�
                 if (g.isPlaying) {
                     if (g.button_pause.isTouchUp(screenX, bufY)) {
                         g.setPause();
+                    }else if (isMusicButtonPressed && g.button_music.isTouchDown(screenX,bufY)){
+                        if (g.turnMusic()){
+                            g.button_music.isPressed = false;
+                        }else{
+                            g.button_music.isPressed = true;
+                        }
                     }
-
+                    isMusicButtonPressed = false;
                 }else if(g.isDeath){
                     if (g.button_watch_ads.isTouchUp(screenX,bufY)){
 

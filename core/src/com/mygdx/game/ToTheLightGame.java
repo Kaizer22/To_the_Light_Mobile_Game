@@ -13,7 +13,7 @@ import com.mygdx.helpers.InputHandler;
 import com.mygdx.helpers.SoundManager;
 
 public class ToTheLightGame extends Game {
-	public SpriteBatch batch;
+	 SpriteBatch batch;
 
 
 
@@ -26,9 +26,11 @@ public class ToTheLightGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		sM = new SoundManager();
 		iM = new ImageManager();
 		iH = new InputHandler();
 		gP = new GamePreferences();
+		sM.isMusicTurnedON = gP.loadMusicOptions();
 		//gP.clearPreferences();
 		this.setScreen(new MenuScreen(this));
 

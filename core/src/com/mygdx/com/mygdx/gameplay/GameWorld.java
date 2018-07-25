@@ -1,5 +1,7 @@
 package com.mygdx.com.mygdx.gameplay;
 
+import com.mygdx.helpers.SoundManager;
+
 import java.util.Random;
 
 /**
@@ -34,45 +36,50 @@ public class GameWorld {
         GameLogic.scoreFactor = 10;
     }
 
-    public GameWorld(float bugX, float bugY, float currentShift,Obstacle[] obstacles, float screenHeight,float pxSize){
+    public GameWorld(float bugX, float bugY, float currentShift,Obstacle[] obstacles, float screenWidth, float screenHeight, float pxSize){
         bug = new Bug(bugX,bugY,pxSize*4);
         shift = currentShift;
         this.obstacles = obstacles;
         background = new Background(0,0,screenHeight);
+        r = new Random();
+        left = new Coin(0,0,pxSize);
+        right = new Coin(screenWidth-pxSize,0,pxSize);
     }
 
-    public void update(){
+    public void update(SoundManager sM){
         shift = GameLogic.calculateShift(shift);
         background.update(shift);
-        for (int i = 0; i < obstacles.length; i++) {
-            obstacles[i].update(shift);
+        for (Obstacle obstacle : obstacles) {
+            obstacle.update(shift);
 
-            if (obstacles[0].y == obstacles[0].blockSize*24){
+            if (obstacles[0].y == obstacles[0].blockSize * 24) {
 
-                if (!left.isVisible){
+                if (!left.isVisible) {
                     left.isVisible = r.nextBoolean();
-                    left.setCost(GameLogic.scoreFactor/10);
-                    left.y = obstacles[0].blockSize*25;
-                    left.collision.y = obstacles[0].blockSize*(float)25.5;
+                    left.setCost(GameLogic.scoreFactor / 10);
+                    left.y = obstacles[0].blockSize * 25;
+                    left.collision.y = obstacles[0].blockSize * 25;
                 }
 
-                if (!right.isVisible){
+                if (!right.isVisible) {
                     right.isVisible = r.nextBoolean();
-                    right.setCost(GameLogic.scoreFactor/2);
-                    right.y = obstacles[0].blockSize*25;
-                    right.collision.y = obstacles[0].blockSize*(float)25.5;
+                    right.setCost(GameLogic.scoreFactor / 10);
+                    right.y = obstacles[0].blockSize * 25;
+                    right.collision.y = obstacles[0].blockSize * 25;
                 }
             }
-            
+
         }
         bug.update();
         if (left.isVisible) {
             left.update(shift);
-            GameLogic.collides(left,bug);
+            if  (GameLogic.collides(left,bug))
+                sM.playCoinSound();
         }
         if (right.isVisible) {
             right.update(shift);
-            GameLogic.collides(right,bug);
+            if(GameLogic.collides(right,bug))
+                sM.playCoinSound();
         }
         GameLogic.checkCollisions(obstacles, bug);
 

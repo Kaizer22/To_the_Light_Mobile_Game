@@ -14,6 +14,8 @@ import java.util.Map;
 public class ImageManager {
 
 
+
+
     private class AnimationManger{
         Animation menu_bg;
         Animation menu_bg_effect;
@@ -22,8 +24,8 @@ public class ImageManager {
         Animation coin;
         Animation death_screen;
 
-        void initializeGameplay(){
-            bug_move = initAnim("gameplay/bug.png",64,64,0.02f);
+        void initializeGameplay(int chosenSkin){
+            bug_move = initAnim("gameplay/skins/bug_"+chosenSkin+".png",64,64,0.02f);
             death_screen = initAnim("gameplay/on_death_bg.png",154,110,0.9f);
             saw = initAnim("gameplay/saw_anim.png",22,22,0.01f);
             coin = initAnim("gameplay/coin.png",22,22,0.06f);
@@ -31,6 +33,10 @@ public class ImageManager {
 
         void initializeMenu(){
             menu_bg_effect = initAnim(97,"menu_bg_effect/bg_effect",0.15f);
+            menu_bg = initAnim(27,"menu_bg/menu_bg",1f);
+        }
+
+        void initializeShop(){
             menu_bg = initAnim(27,"menu_bg/menu_bg",1f);
         }
 
@@ -80,7 +86,6 @@ public class ImageManager {
     public void initializeMenu() {
         animator.initializeMenu();
 
-        textureRegions.put("bg_effect",new TextureRegion(new Texture("bg_effect.png")));
         textureRegions.put("logo",new TextureRegion(new Texture("logo.png")));
 
         texture1 = new Texture("buttons.png");
@@ -99,8 +104,8 @@ public class ImageManager {
 
     }
 
-    public void initializeGameplay(){
-        animator.initializeGameplay();
+    public void initializeGameplay(int chosenSkin){
+        animator.initializeGameplay(chosenSkin);
 
         textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/stone_wall.png")));
         textureRegions.put("bricks",new TextureRegion(new Texture("gameplay/bricks.png")));
@@ -154,6 +159,23 @@ public class ImageManager {
         textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
         textureRegions.put("bcoll",new TextureRegion(new Texture("gameplay/bcoll.png")));
 
+    }
+
+    public void initializeShop(){
+        texture1 = new Texture("buttons.png");
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
+        textureRegions.put("button_exitUp",tmp[2][0]);
+        textureRegions.put("button_exitDown",tmp[3][0]);
+        textureRegions.put("button_musicOn",tmp[4][0]);
+        textureRegions.put("button_musicOff",tmp[5][0]);
+
+        textureRegions.put("skin_bg_opened",new TextureRegion(new Texture("skins_icons/skin_bg_opened.png")));
+        textureRegions.put("skin_bg_closed",new TextureRegion(new Texture("skins_icons/skin_bg_closed.png")));
+        textureRegions.put("skin_bg_chosen",new TextureRegion(new Texture("skins_icons/skin_bg_chosen.png")));
+        textureRegions.put("skin_lock",new TextureRegion(new Texture("skins_icons/skin_lock.png")));
+
+
+        animator.initializeShop();
     }
 
     public void dispose(){
@@ -215,6 +237,23 @@ public class ImageManager {
     }
     public TextureRegion getMenuBgEffectCurrentFrame(float stateTime){
         return (TextureRegion) animator.menu_bg_effect.getKeyFrame(stateTime,true);
+    }
+
+    public TextureRegion getSkinBg(boolean isOpened) {
+        if (isOpened){
+            return textureRegions.get("skin_bg_opened");
+        }else{
+            return textureRegions.get("skin_bg_closed");
+        }
+
+    }
+
+    public TextureRegion getChosenSkinFrame(){
+        return textureRegions.get("skin_bg_chosen");
+    }
+
+    public TextureRegion getSkinLock(){
+        return textureRegions.get("skin_lock");
     }
 
     public TextureRegion getDeathScreenCurrentFrame(float stateTime){

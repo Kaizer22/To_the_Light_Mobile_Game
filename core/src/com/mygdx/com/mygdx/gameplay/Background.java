@@ -10,14 +10,14 @@ public class Background {
     float x1,y1;
     float x2,y2;
 
-    Random r; int random;
+    private Random r; private int random;
 
     Type section1;
     Type section2;
 
-    float height;
+    private float height;
 
-    public Background(float x, float y, float screenHeight){
+    Background(float x, float y, float screenHeight){
         x1 = x;
         y1 = y;
 

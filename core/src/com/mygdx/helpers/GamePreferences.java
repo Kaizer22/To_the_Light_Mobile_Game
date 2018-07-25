@@ -57,7 +57,7 @@ public class GamePreferences {
             rp = preferences.getInteger("obstacle_"+ i +"_rp");
             obstacles[i] = new Obstacle(o_x,o_y,type.toUpperCase(),lp,rp,pxSize,screenWidth);
         }
-        return new GameWorld(bugX,bugY,shift,obstacles,screenHeight,pxSize) ;
+        return new GameWorld(bugX,bugY,shift,obstacles,screenWidth,screenHeight,pxSize) ;
     }
     
     public void clearPreferences(){
@@ -71,5 +71,23 @@ public class GamePreferences {
     }
     public int loadHighscore(){
         return preferences.getInteger("highscore");
+    }
+
+    public void saveMusicOptions(boolean isMusicTurnedON){
+        preferences.putBoolean("musicOption",isMusicTurnedON);
+        preferences.flush();
+    }
+
+    public boolean loadMusicOptions(){
+        return preferences.getBoolean("musicOption");
+    }
+
+    public void saveChosenSkin(int number){
+        preferences.putInteger("chosenSkin", number);
+        preferences.flush();
+    }
+
+    public int loadChosenSkin(){
+        return preferences.getInteger("chosenSkin",0);
     }
 }

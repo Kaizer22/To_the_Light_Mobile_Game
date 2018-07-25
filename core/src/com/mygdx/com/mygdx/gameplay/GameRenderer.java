@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.helpers.ImageManager;
+import com.mygdx.helpers.SoundManager;
 
 /**
  * Created by denis on 17.06.18.
@@ -15,19 +16,23 @@ public class GameRenderer {
     SpriteBatch batch;
     float screenWidth, screenHeight, pxSize;
 
-    public GameRenderer(SpriteBatch b, float sW, float sH, float pxS) {
+    int chosenSkin;
+
+    public GameRenderer(SpriteBatch b, float sW, float sH, float pxS, int chosenSkin) {
         batch = b;
         screenHeight = sH;
         screenWidth = sW;
         pxSize = pxS;
+
+        this.chosenSkin = chosenSkin;
 
         world = new GameWorld(sW, sH, pxS);
 
     }
 
 
-    public boolean update() {
-        world.update();
+    public boolean update(SoundManager sM) {
+        world.update(sM);
         return world.bug.isAlive;
     }
 
@@ -80,10 +85,7 @@ public class GameRenderer {
               batch.draw(imageManager.getSawCurrentFrame(stateTime),world.obstacles[i].x,world.obstacles[i].y,bl_size,bl_size);
             }
 
-            //TODO delete this
-            //batch.draw(imageManager.getColl(),world.obstacles[i].lp_collision.x,world.obstacles[i].lp_collision.y,world.obstacles[i].lp_collision.width,world.obstacles[i].lp_collision.height);
-            //batch.draw(imageManager.getColl(),world.obstacles[i].rp_collision.x,world.obstacles[i].rp_collision.y,world.obstacles[i].rp_collision.width,world.obstacles[i].rp_collision.height);
-            //--
+
         }
 
     }
@@ -94,9 +96,6 @@ public class GameRenderer {
         batch.draw(imageManager.getBugBackground(),bug_x,bug_y,bug_size,bug_size);
         batch.draw(imageManager.getBugCurrentFrame(stateTime),bug_x,bug_y,bug_size,bug_size);
 
-
-        //TODO del this
-        //batch.draw(imageManager.getBColl(),world.bug.collision.x,world.bug.collision.y,world.bug.collision.width,world.bug.collision.height);
 
     }
     private void drawBackground(ImageManager imageManager){
@@ -123,8 +122,7 @@ public class GameRenderer {
             float c_x2 = world.right.x;
             float c_y2 = world.right.y;
             batch.draw(imageManager.getCoinCurrentFrame(stateTime), c_x2, c_y2, pxSize, pxSize);
-            //TODO del this
-           // batch.draw(imageManager.getBColl(),world.right.collision.x - world.right.size/2,world.right.collision.x - world.right.size/2, world.right.size, world.right.size);
+
         }
     }
 

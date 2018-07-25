@@ -40,6 +40,8 @@ public class GameplayScreen implements Screen {
 
     private boolean mustBeLoaded = false;
 
+    private int chosenSkin;
+
     String bufString;
 
     public GameplayScreen (ToTheLightGame toTheLightGame){
@@ -48,9 +50,15 @@ public class GameplayScreen implements Screen {
 
         //game.gP.clearPreferences();
 
-        game.iM.initializeGameplay();
+        if(game.sM.isMusicTurnedON)
+            game.sM.playMainTheme();
+
+        chosenSkin = game.gP.loadChosenSkin();
+        game.iM.initializeGameplay(chosenSkin);
         GameLogic.highscore = game.gP.loadHighscore();
+
         System.out.println("_________________________point1_________________");
+
 
     }
 
@@ -72,7 +80,7 @@ public class GameplayScreen implements Screen {
 
 
         if (isPlaying){
-            if (!renderer.update()) {
+            if (!renderer.update(game.sM)) {
                 isPlaying = false;
                 isDeath = true;
 
@@ -108,10 +116,13 @@ public class GameplayScreen implements Screen {
         button_pause.draw(game.batch);
 
         bufString = "" + (int)GameLogic.score;
-        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight - pxSize);
+        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight - (float)(0.5)*pxSize);
 
         bufString = "max " + GameLogic.highscore;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-2*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-(float)(1.5)*pxSize);
+
+        bufString = "coin cost: " + GameLogic.scoreFactor/10;
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-(float)(2.25)*pxSize);
     }
 
     private void drawPauseScreen(){
@@ -164,13 +175,15 @@ public class GameplayScreen implements Screen {
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
         button_pause = new MyButton(screenWidth - pxSize*2,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_PauseUp(),game.iM.getButton_PauseDown());
 
+        button_music.isPressed = !game.sM.isPlaying();
+
         System.out.println("_____________________point2_____________________");
 
         if (mustBeLoaded){
             renderer.setWorld(game.gP.loadWorld(screenWidth,screenHeight,pxSize));
             mustBeLoaded = false;
         }else{
-            renderer = new GameRenderer(game.batch,screenWidth,screenHeight,pxSize);
+            renderer = new GameRenderer(game.batch,screenWidth,screenHeight,pxSize,chosenSkin);
         }
 
         game.iH.setCondition_Gameplay(this);
@@ -179,6 +192,7 @@ public class GameplayScreen implements Screen {
     @Override
     public void pause() {
         game.gP.saveWorld(renderer.getBug(),renderer.getObstacles(),renderer.getShift());
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
         System.out.println("_______________________point3___________________");
 
     }
@@ -186,15 +200,23 @@ public class GameplayScreen implements Screen {
     @Override
     public void resume() {
         mustBeLoaded = true;
+        game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
+        if (game.sM.isPlaying()){
+            button_music.isPressed = false;
+        }else{
+            button_music.isPressed = true;
+        }
         System.out.println("_______________________point4___________________");
     }
 
     @Override
     public void hide() {
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
     }
 
     @Override
     public void dispose(){
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
         game.iM.dispose();
     }
 
@@ -209,6 +231,16 @@ public class GameplayScreen implements Screen {
         onPause = false;
         isPlaying = true;
 
+    }
+
+    public boolean turnMusic(){
+        if (game.sM.isPlaying()){
+            game.sM.stopMainTheme();
+            return false;
+        }else {
+            game.sM.playMainTheme();
+            return true;
+        }
     }
 
     public void restartGame(){

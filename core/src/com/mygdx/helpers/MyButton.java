@@ -16,7 +16,7 @@ public class MyButton {
     Rectangle  bounds;
     TextureRegion buttonUp;
     TextureRegion buttonDown;
-    boolean isPressed = false;
+    public boolean isPressed = false;
 
 
 

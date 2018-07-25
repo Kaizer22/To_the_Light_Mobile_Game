@@ -18,7 +18,7 @@ public class SplashActivity  extends Activity implements MediaPlayer.OnCompletio
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-        String fileName = //"android.resource://"+  getPackageName() //TODO fix video
+        String fileName = //"android.resource://"+  getPackageName()                //TODO fix video
                  "/res/raw/video/intro_vertical.mp4";
 
         VideoView vv = (VideoView) this.findViewById(R.id.surface);
