@@ -201,11 +201,7 @@ public class GameplayScreen implements Screen {
     public void resume() {
         mustBeLoaded = true;
         game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
-        if (game.sM.isPlaying()){
-            button_music.isPressed = false;
-        }else{
-            button_music.isPressed = true;
-        }
+        button_music.isPressed = !game.sM.isPlaying();
         System.out.println("_______________________point4___________________");
     }
 

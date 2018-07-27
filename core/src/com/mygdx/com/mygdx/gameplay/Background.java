@@ -39,13 +39,15 @@ public class Background {
     }
 
     private Type getRandomType(){
-        random = r.nextInt(2);
+        random = r.nextInt(3);
 
         switch (random){
             case (0):
                 return Type.STONE_WALL;
             case (1):
                 return Type.BRICKS;
+            case (2):
+                return Type.TEMPLE_WALL;
 
         }
 

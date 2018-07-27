@@ -155,11 +155,7 @@ public class MenuScreen implements Screen {
     @Override
     public void resume() {
         game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
-        if (game.sM.isPlaying()){
-            button_music.isPressed = false;
-        }else{
-            button_music.isPressed = true;
-        }
+        button_music.isPressed = !game.sM.isPlaying();
     }
     @Override
     public void hide() {

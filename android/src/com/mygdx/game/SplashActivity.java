@@ -18,12 +18,13 @@ public class SplashActivity  extends Activity implements MediaPlayer.OnCompletio
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-        String fileName = //"android.resource://"+  getPackageName()                //TODO fix video
-                 "/res/raw/video/intro_vertical.mp4";
+        String fileName = "android.resource://"+ getPackageName() +"/" + R.raw.intro_vertical;
+
 
         VideoView vv = (VideoView) this.findViewById(R.id.surface);
         vv.setVideoURI(Uri.parse(fileName));
         vv.setOnCompletionListener(this);
+        //vv.resolveAdjustedSize()
         vv.start();
 
     }

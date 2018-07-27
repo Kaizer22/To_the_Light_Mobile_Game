@@ -107,7 +107,7 @@ public class ShopScreen implements Screen {
                     game.batch.draw(game.iM.getSkinBg(true), skinsX + iconSize* j,skinsY - iconSize * i,iconSize,iconSize);
                     if (skins[i][j].isChosen)
                         game.batch.draw(game.iM.getChosenSkinFrame(), skinsX + iconSize* j,skinsY - iconSize * i,iconSize,iconSize);
-                    //game.batch.draw(game.iM.getSkin(skins[i][j].number),pxSize*(float)(1.5)+skins[0][0].iconSize*j,pxSize*5+skins[0][0].iconSize*i,skins[0][0].iconSize,skins[0][0].iconSize);
+                    game.batch.draw(game.iM.getSkinIcon(skins[i][j].number),skinsX + iconSize* j,skinsY - iconSize * i,iconSize,iconSize);
                 } else {
                     game.batch.draw(game.iM.getSkinBg(false), skinsX + iconSize* j,skinsY - iconSize * i,iconSize,iconSize);
                     game.batch.draw(game.iM.getSkinLock(), skinsX + iconSize* j,skinsY - iconSize * i,iconSize,iconSize);
@@ -165,7 +165,7 @@ public class ShopScreen implements Screen {
         prepareSkins();
 
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
-        button_exitToMenu = new MyButton((float)(screenWidth/2+pxSize*1.5),pxSize*(float)(0.5),(float)(pxSize*2.5),(float)(pxSize*2.5),game.iM.getButton_ExitUp(),game.iM.getButton_ExitDown());
+        button_exitToMenu = new MyButton((float)(screenWidth/2+pxSize*3.5),pxSize*(float)(0.5),(float)(pxSize*2.5),(float)(pxSize*2.5),game.iM.getButton_ExitUp(),game.iM.getButton_ExitDown());
 
         button_music.isPressed = !game.sM.isPlaying();
     }
@@ -178,11 +178,7 @@ public class ShopScreen implements Screen {
     @Override
     public void resume() {
         game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
-        if (game.sM.isPlaying()){
-            button_music.isPressed = false;
-        }else{
-            button_music.isPressed = true;
-        }
+        button_music.isPressed = !game.sM.isPlaying();
     }
 
     @Override

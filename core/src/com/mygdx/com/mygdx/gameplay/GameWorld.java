@@ -74,12 +74,14 @@ public class GameWorld {
         if (left.isVisible) {
             left.update(shift);
             if  (GameLogic.collides(left,bug))
-                sM.playCoinSound();
+                if (sM.isMusicTurnedON)
+                    sM.playCoinSound();
         }
         if (right.isVisible) {
             right.update(shift);
             if(GameLogic.collides(right,bug))
-                sM.playCoinSound();
+                if (sM.isMusicTurnedON)
+                    sM.playCoinSound();
         }
         GameLogic.checkCollisions(obstacles, bug);
 
