@@ -28,11 +28,13 @@ public class ShopScreen implements Screen {
     private float stateTime = 0f;
 
     public Skin[][] skins;
-    public float skinsX;
-    public float skinsY;
-    public float iconSize;
     public int yMax = 5;
     public int xMax = 3;
+
+    private float skinsX;
+    private float skinsY;
+    private float iconSize;
+
 
     private int chosenSkin;
 
@@ -124,9 +126,8 @@ public class ShopScreen implements Screen {
 
     public void chooseSkin(int x,int y){
         if (skins[y][x].isOpened){
-            int lastY = chosenSkin/xMax+(chosenSkin%xMax ==0?-1:0);
-            int lastX = (chosenSkin - lastY*xMax)%xMax;
-            skins[chosenSkin/xMax+(chosenSkin%xMax ==0?-1:0)][(chosenSkin%xMax==0)?xMax-1:(chosenSkin%xMax-1)].isChosen = false;
+            if (chosenSkin != 0)
+                skins[chosenSkin/xMax+(chosenSkin%xMax ==0?-1:0)][(chosenSkin%xMax==0)?xMax-1:(chosenSkin%xMax-1)].isChosen = false;
             skins[y][x].isChosen = true;
             chosenSkin = skins[y][x].number;
             game.gP.saveChosenSkin(chosenSkin);

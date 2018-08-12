@@ -15,6 +15,8 @@ public class ImageManager {
 
 
 
+    private AnimationManger animator;
+
 
     private class AnimationManger{
         Animation menu_bg;
@@ -31,6 +33,9 @@ public class ImageManager {
             coin = initAnim("gameplay/coin.png",22,22,0.06f);
         }
 
+        void initializeWinScreen(int chosenSkin) {
+            bug_move = initAnim("skins/animations/bug_" + chosenSkin + ".png", 64, 64, 0.02f);
+        }
         void initializeMenu(){
             menu_bg_effect = initAnim(97,"menu_bg_effect/bg_effect",0.15f);
             menu_bg = initAnim(27,"menu_bg/menu_bg",1f);
@@ -65,18 +70,14 @@ public class ImageManager {
         }
 
 
+
+
     }
 
-    private AnimationManger animator;
 
     private Map<String,TextureRegion> textureRegions;
     private Texture texture1;
 
-
-    //TextureAtlas obstacles;
-    //TextureAtlas backgrounds;
-    //TextureAtlas bug;
-    //TextureAtlas coin;
 
     public ImageManager(){
         textureRegions = new HashMap<String, TextureRegion>();
@@ -102,18 +103,25 @@ public class ImageManager {
         textureRegions.put("button_playUp",tmp[0][0]);
         textureRegions.put("button_playDown",tmp[1][0]);
 
+
+
     }
 
     public void initializeGameplay(int chosenSkin){
         animator.initializeGameplay(chosenSkin);
 
-        textureRegions.put("stone_wall",new TextureRegion(new Texture("gameplay/backgrounds/stone_wall.png")));
-        textureRegions.put("bricks",new TextureRegion(new Texture("gameplay/backgrounds/bricks.png")));
-        textureRegions.put("temple_wall",new TextureRegion(new Texture("gameplay/backgrounds/temple_wall.png")));
+        texture1 = new Texture("gameplay/backgrounds/backgrounds.png");
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
 
+        textureRegions.put("stone_wall",tmp[0][0]);
+        textureRegions.put("bricks",tmp[1][0]);
+        textureRegions.put("temple_wall",tmp[2][0]);
+        textureRegions.put("communications",tmp[3][0]);
+        textureRegions.put("darkness",tmp[4][0]);
+        textureRegions.put("sky",tmp[5][0]);
 
         texture1 = new Texture("gameplay/blocks.png");
-        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
+        tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
         textureRegions.put("wood",tmp[0][0]);
         textureRegions.put("stone",tmp[1][0]);
         textureRegions.put("sharp",tmp[2][0]);
@@ -157,8 +165,8 @@ public class ImageManager {
         textureRegions.put("on_pause_bg", new TextureRegion(new Texture("gameplay/on_pause_bg.png")));
 
         //------------ Debug textures -------------
-        textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
-        textureRegions.put("bcoll",new TextureRegion(new Texture("gameplay/bcoll.png")));
+        //textureRegions.put("coll",new TextureRegion(new Texture("gameplay/coll.png")));
+        //textureRegions.put("bcoll",new TextureRegion(new Texture("gameplay/bcoll.png")));
 
     }
 
@@ -170,8 +178,11 @@ public class ImageManager {
         textureRegions.put("button_musicOn",tmp[4][0]);
         textureRegions.put("button_musicOff",tmp[5][0]);
 
-        for (int i = 1; i <= 15; i++) {  //количество Skins
-            textureRegions.put("skin_"+i+"_icon", new TextureRegion(new Texture("skins/icons/bug_"+i+".png")));
+
+        texture1 = new Texture("skins/icons.png");
+         tmp = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/16);
+        for (int i = 0; i <= 15; i++) {  //количество Skins
+            textureRegions.put("skin_"+i+"_icon", tmp[i][0]);
         }
 
         textureRegions.put("skin_bg_opened",new TextureRegion(new Texture("skins/icons/skin_bg_opened.png")));
@@ -183,8 +194,19 @@ public class ImageManager {
         animator.initializeShop();
     }
 
+    public void initializeWinScreen(int chosenSkin) {
+
+        texture1 = new Texture("gameplay/backgrounds/backgrounds.png");
+        TextureRegion tmp[][] = TextureRegion.split(texture1, texture1.getWidth(), texture1.getHeight()/6);
+        textureRegions.put("sky",tmp[5][0]);
+
+        animator.initializeWinScreen(chosenSkin);
+    }
+
+
     public void dispose(){
         textureRegions.clear();
+        texture1.dispose();
     }
 
 
@@ -231,8 +253,8 @@ public class ImageManager {
     public TextureRegion getOnPauseBg(){return textureRegions.get("on_pause_bg");}
 
 
-    public TextureRegion getColl(){return textureRegions.get("coll");}
-    public TextureRegion getBColl(){return textureRegions.get("bcoll");}
+    //public TextureRegion getColl(){return textureRegions.get("coll");}
+    //public TextureRegion getBColl(){return textureRegions.get("bcoll");}
 
     public TextureRegion getFrameEffect(){return textureRegions.get("frame");}
 

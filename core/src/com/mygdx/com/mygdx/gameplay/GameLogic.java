@@ -11,7 +11,9 @@ public class GameLogic {
     public static double score = 1;
     public static int scoreFactor = 10;
     public static int highscore;
-    public static void checkCollisions(Obstacle[] obstacles, Bug bug){
+    public static boolean isEndlessModeOn;
+
+    static void checkCollisions(Obstacle[] obstacles, Bug bug){
         for (Obstacle obstacle : obstacles) {
 
             if (Math.abs(Math.max(obstacle.y, bug.collision.y) - Math.min(obstacle.y, bug.collision.y)) <= bug.size / 2) {
@@ -57,13 +59,13 @@ public class GameLogic {
 
     }
 
-    public static boolean collides(Obstacle obstacle, Bug bug){
+    private static boolean collides(Obstacle obstacle, Bug bug){
         return (Intersector.overlaps(obstacle.lp_collision,bug.collision) || Intersector.overlaps(obstacle.rp_collision,bug.collision));
 
         }
 
 
-    public static boolean collides(Coin coin, Bug bug) {
+    static boolean collides(Coin coin, Bug bug) {
         if (Intersector.overlaps(coin.collision,bug.collision)){
             score += coin.getCost();
             coin.isVisible = false;
@@ -72,16 +74,16 @@ public class GameLogic {
         return false;
     }
 
-    public static void updateScore(float shift ){
-        score += shift / 45;
+    static void updateScore(float shift, float coefficient){
+        score += shift / 40 / coefficient ;
     }
 
-    public static float calculateShift(float shift){
+    static float calculateShift(float shift, float coefficient){
 
         if ((int)score > scoreFactor){
             float s;
-            s = shift + (float)0.5;
-            scoreFactor = (int)(scoreFactor * 1.5);
+            s = shift + (float)0.5*coefficient;
+            scoreFactor = (int)(scoreFactor * 1.45);
             return s;
         }
         return shift;

@@ -17,12 +17,12 @@ public class GameWorld {
     float shift;
     Random r;
 
-    public GameWorld(float screenWidth, float screenHeight,float pxSize){
+    public GameWorld(float screenWidth, float screenHeight,float pxSize,float screenCoeff){
         r = new Random();
 
         bug = new Bug(screenWidth/2,screenHeight/2,pxSize*4);
         background = new Background(0,0,screenHeight);
-        shift = 3; //3
+        shift = 3*screenCoeff; //3
         left = new Coin(0,0,pxSize);
         right = new Coin(screenWidth-pxSize,0,pxSize);
         obstacles = new Obstacle[5];
@@ -46,8 +46,8 @@ public class GameWorld {
         right = new Coin(screenWidth-pxSize,0,pxSize);
     }
 
-    public void update(SoundManager sM){
-        shift = GameLogic.calculateShift(shift);
+    public void update(SoundManager sM, float screenCoeff){
+        shift = GameLogic.calculateShift(shift, screenCoeff);
         background.update(shift);
         for (Obstacle obstacle : obstacles) {
             obstacle.update(shift);
@@ -56,14 +56,14 @@ public class GameWorld {
 
                 if (!left.isVisible) {
                     left.isVisible = r.nextBoolean();
-                    left.setCost(GameLogic.scoreFactor / 10);
+                    left.setCost(GameLogic.scoreFactor / 15);
                     left.y = obstacles[0].blockSize * 25;
                     left.collision.y = obstacles[0].blockSize * 25;
                 }
 
                 if (!right.isVisible) {
                     right.isVisible = r.nextBoolean();
-                    right.setCost(GameLogic.scoreFactor / 10);
+                    right.setCost(GameLogic.scoreFactor / 15);
                     right.y = obstacles[0].blockSize * 25;
                     right.collision.y = obstacles[0].blockSize * 25;
                 }
@@ -93,7 +93,8 @@ public class GameWorld {
                 bug.isAlive = false;
             }
         }
-       GameLogic.updateScore(shift);
+       GameLogic.updateScore(shift,screenCoeff);
+
     }
 
 

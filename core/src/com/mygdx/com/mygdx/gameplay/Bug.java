@@ -9,17 +9,17 @@ import com.badlogic.gdx.math.Rectangle;
 public class Bug {
     float x,y;
     float size;
-    public Rectangle collision;
+    Rectangle collision;
     public Rectangle input_borders;
 
-    public boolean isAlive;
+    boolean isAlive;
 
     boolean canMoveRight = true;
     boolean canMoveLeft = true;
     boolean canMoveUp = true;
     boolean canMoveDown = true;
 
-    public Bug(float x, float y, float size){
+    Bug(float x, float y, float size){
         isAlive = true;
         this.x = x;
         this.y = y;

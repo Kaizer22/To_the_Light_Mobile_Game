@@ -21,14 +21,14 @@ public class Obstacle {
     Rectangle lp_collision;
     Rectangle rp_collision;
 
-    Random r;
+    private Random r;
 
     float blockSize;
 
-    float width, height;
+    private float width, height;
 
     Type t;
-    boolean isSawGoingLeft;
+    private boolean isSawGoingLeft;
 
 
     public Obstacle(float screenWidth, float screenHeight,float x_pos, float y_pos){
@@ -189,11 +189,11 @@ public class Obstacle {
             }
 
         }else{
-            for (int i = 0; i < left_plank.length; i++) {
-                left_plank[i].y = y;
+            for (Rectangle aLeft_plank : left_plank) {
+                aLeft_plank.y = y;
             }
-            for (int i = 0; i < right_plank.length; i++) {
-                right_plank[i].y = y;
+            for (Rectangle aRight_plank : right_plank) {
+                aRight_plank.y = y;
             }
             rp_collision.y -=shift;
             lp_collision.y -=shift;
@@ -228,7 +228,7 @@ public class Obstacle {
         return t.toString().toLowerCase();
     }
 
-    public Type getType(String type){
+    private Type getType(String type){
         return valueOf(type);
     }
 
@@ -241,6 +241,6 @@ public class Obstacle {
     }
 
     enum Type {
-        WOOD, STONE, SHARP, TUBE_RED, TUBE_BLUE, SAW;
+        WOOD, STONE, SHARP, TUBE_RED, TUBE_BLUE, SAW
     }
 }

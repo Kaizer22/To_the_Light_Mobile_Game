@@ -19,7 +19,9 @@ import java.util.Random;
 public class MenuScreen implements Screen {
     final ToTheLightGame game;
 
-    float screenWidth, screenHeight, pxSize;
+    private float screenWidth, screenHeight, pxSize;
+
+    private boolean isPlaying ;
 
 
     private OrthographicCamera camera;
@@ -32,7 +34,8 @@ public class MenuScreen implements Screen {
 
 
 
-    public MenuScreen(ToTheLightGame toTheLightGame) {
+    MenuScreen(ToTheLightGame toTheLightGame) {
+        isPlaying = true;
 
         game = toTheLightGame;
         camera = new OrthographicCamera();
@@ -66,8 +69,8 @@ public class MenuScreen implements Screen {
 
 
         game.batch.begin();
-
-            drawMenu();
+            if (isPlaying)
+                drawMenu();
 
         game.batch.end();
     }
@@ -97,8 +100,14 @@ public class MenuScreen implements Screen {
     }
 
     public void exit(){
+        isPlaying = false;
+        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
         dispose();
         game.dispose();
+        Gdx.app.exit();
+
+
+
     }
     public void startGame(){
         dispose();
@@ -122,6 +131,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        isPlaying = true;
         camera.setToOrtho(false,width,height);
         screenHeight = height;
         screenWidth = width;
@@ -139,8 +149,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
-        game.iM.dispose();
+       game.iM.dispose();
     }
 
 

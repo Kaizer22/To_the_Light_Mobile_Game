@@ -14,9 +14,9 @@ public class GameRenderer {
     private GameWorld world;
 
     SpriteBatch batch;
-    float screenWidth, screenHeight, pxSize;
+    private float screenWidth, screenHeight, pxSize;
 
-    int chosenSkin;
+    private float screenCoefficient;
 
     public GameRenderer(SpriteBatch b, float sW, float sH, float pxS, int chosenSkin) {
         batch = b;
@@ -24,20 +24,20 @@ public class GameRenderer {
         screenWidth = sW;
         pxSize = pxS;
 
-        this.chosenSkin = chosenSkin;
+        screenCoefficient = screenHeight/1920; //--------------------
 
-        world = new GameWorld(sW, sH, pxS);
+        world = new GameWorld(sW, sH, pxS,screenCoefficient);
 
     }
 
 
     public boolean update(SoundManager sM) {
-        world.update(sM);
+        world.update(sM,screenCoefficient);
         return world.bug.isAlive;
     }
 
     public void restart(){
-        world = new GameWorld(screenWidth,screenHeight,pxSize);
+        world = new GameWorld(screenWidth,screenHeight,pxSize,screenCoefficient);
     }
 
     public void setWorld(GameWorld world){

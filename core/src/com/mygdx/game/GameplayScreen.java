@@ -44,11 +44,9 @@ public class GameplayScreen implements Screen {
 
     String bufString;
 
-    public GameplayScreen (ToTheLightGame toTheLightGame){
+    GameplayScreen(ToTheLightGame toTheLightGame){
         game = toTheLightGame;
         camera = new OrthographicCamera();
-
-        //game.gP.clearPreferences();
 
         if(game.sM.isMusicTurnedON)
             game.sM.playMainTheme();
@@ -56,20 +54,16 @@ public class GameplayScreen implements Screen {
         chosenSkin = game.gP.loadChosenSkin();
         game.iM.initializeGameplay(chosenSkin);
         GameLogic.highscore = game.gP.loadHighscore();
-
-        System.out.println("_________________________point1_________________");
+        GameLogic.isEndlessModeOn = game.gP.loadEndlessModeTrigger();
 
 
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
-        //Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
@@ -84,8 +78,13 @@ public class GameplayScreen implements Screen {
                 isPlaying = false;
                 isDeath = true;
 
+               saveHighScore();
+
                 button_restart = new MyButton(pxSize*(float)(3)+pxSize*3,screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_RestartUp(),game.iM.getButton_RestartDown());
                 button_watch_ads = new MyButton(pxSize*(float)(3),screenHeight/2-pxSize*(float)(0.75),pxSize*3,pxSize*3,game.iM.getButton_WatchAdsUp(),game.iM.getButton_WatchAdsDown());
+
+            }else if (!GameLogic.isEndlessModeOn && GameLogic.score >= 1048580) {
+                toWinScreen();
             }
         }
 
@@ -116,13 +115,13 @@ public class GameplayScreen implements Screen {
         button_pause.draw(game.batch);
 
         bufString = "" + (int)GameLogic.score;
-        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight - (float)(0.5)*pxSize);
+        scoreFont.draw(game.batch,bufString,screenWidth/2-(scoreFont.getCapHeight()* bufString.length()/2),screenHeight - (float)(0.5)*pxSize);
 
         bufString = "max " + GameLogic.highscore;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-(float)(1.5)*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-(highscoreFont.getCapHeight()* bufString.length()/2),screenHeight-(float)(1.5)*pxSize);
 
         bufString = "coin cost: " + GameLogic.scoreFactor/10;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight-(float)(2.25)*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-(highscoreFont.getCapHeight()* bufString.length()/2),screenHeight-(float)(2.25)*pxSize);
     }
 
     private void drawPauseScreen(){
@@ -137,10 +136,10 @@ public class GameplayScreen implements Screen {
         game.batch.draw(game.iM.getDeathScreenCurrentFrame(stateTime), pxSize*(float)(0.75),screenHeight/2-pxSize*(float)(3.75),pxSize*(float)(10.5),pxSize*(float)(7.5));
 
         bufString = "" + (int)GameLogic.score;
-        scoreFont.draw(game.batch,bufString,screenWidth/2-(pxSize* bufString.length()/2),screenHeight/2+(float)(3.5)*pxSize);
+        scoreFont.draw(game.batch,bufString,screenWidth/2-(scoreFont.getCapHeight()* bufString.length()/2),screenHeight/2+(float)(3.5)*pxSize);
 
         bufString = "max " + GameLogic.highscore;
-        highscoreFont.draw(game.batch,bufString,screenWidth/2-((pxSize/3*2)* bufString.length()/2),screenHeight/2-(float)(1.15)*pxSize);
+        highscoreFont.draw(game.batch,bufString,screenWidth/2-(highscoreFont.getCapHeight()* bufString.length()/2),screenHeight/2-(float)(1.15)*pxSize);
 
         button_watch_ads.draw(game.batch);
         button_restart.draw(game.batch);
@@ -168,16 +167,15 @@ public class GameplayScreen implements Screen {
         scoreFont.getData().setScale(width/300);
 
         highscoreFont = new BitmapFont(Gdx.files.internal("pixel_font.fnt"));
-        highscoreFont.getData().setScale(width/500);
-        //System.out.println(scoreFont.getCapHeight() + " :: " + scoreFont.getLineHeight() + "_______"+ pxSize);
-        //System.out.println(width + "-_)_" + height);
+        highscoreFont.getData().setScale(width/600 + 1);
+
 
         button_music = new MyButton(0,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_MusicOn(),game.iM.getButton_MusicOff());
         button_pause = new MyButton(screenWidth - pxSize*2,screenHeight-pxSize*2,pxSize*2,pxSize*2,game.iM.getButton_PauseUp(),game.iM.getButton_PauseDown());
 
         button_music.isPressed = !game.sM.isPlaying();
 
-        System.out.println("_____________________point2_____________________");
+
 
         if (mustBeLoaded){
             renderer.setWorld(game.gP.loadWorld(screenWidth,screenHeight,pxSize));
@@ -193,7 +191,7 @@ public class GameplayScreen implements Screen {
     public void pause() {
         game.gP.saveWorld(renderer.getBug(),renderer.getObstacles(),renderer.getShift());
         game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
-        System.out.println("_______________________point3___________________");
+
 
     }
 
@@ -202,7 +200,7 @@ public class GameplayScreen implements Screen {
         mustBeLoaded = true;
         game.sM.isMusicTurnedON = game.gP.loadMusicOptions();
         button_music.isPressed = !game.sM.isPlaying();
-        System.out.println("_______________________point4___________________");
+
     }
 
     @Override
@@ -214,6 +212,8 @@ public class GameplayScreen implements Screen {
     public void dispose(){
         game.gP.saveMusicOptions(game.sM.isMusicTurnedON);
         game.iM.dispose();
+        highscoreFont.dispose();
+        scoreFont.dispose();
     }
 
     public void setPause() {
@@ -226,7 +226,6 @@ public class GameplayScreen implements Screen {
     public void returnToGame(){
         onPause = false;
         isPlaying = true;
-
     }
 
     public boolean turnMusic(){
@@ -243,20 +242,29 @@ public class GameplayScreen implements Screen {
         isPlaying = true;
         isDeath = false;
 
+        renderer.restart();
+        game.iH.setCondition_Gameplay(this);
+
+    }
+    private void saveHighScore(){
         if (GameLogic.highscore < (int)GameLogic.score){
             game.gP.saveHighscore((int)GameLogic.score);
             GameLogic.highscore = (int)GameLogic.score;
         }
-
-        renderer.restart();
-        game.iH.setCondition_Gameplay(this);
-
-
     }
 
     public void toMainMenu(){
         dispose();
         MenuScreen m = new MenuScreen(game);
         game.setScreen(m);
+    }
+
+    public void toWinScreen(){
+        game.gP.saveEndlessModeTrigger(true);
+        saveHighScore();
+        isPlaying = false;
+        dispose();
+        WinScreen w = new WinScreen(game,chosenSkin);
+        game.setScreen(w);
     }
 }

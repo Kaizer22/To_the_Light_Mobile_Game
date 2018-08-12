@@ -15,7 +15,7 @@ public class Coin {
 
     private int cost;
 
-    public Coin(float x, float y, float pxSize){
+    Coin(float x, float y, float pxSize){
         this.x = x;
         this.y = y;
         size = pxSize;
@@ -23,11 +23,11 @@ public class Coin {
         isVisible = false;
     }
 
-    public int getCost(){
+    int getCost(){
         return cost;
     }
 
-    public void setCost(int newCost){
+    void setCost(int newCost){
         cost = newCost;
     }
     public void update(float shift){

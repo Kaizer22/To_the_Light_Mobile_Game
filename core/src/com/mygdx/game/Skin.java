@@ -13,7 +13,7 @@ public class Skin {
     public boolean isClicked;
     public Rectangle inputBorders;
 
-    public Skin(boolean isOpened,int number,float x, float y, float size){
+    Skin(boolean isOpened, int number, float x, float y, float size){
         this.isOpened = isOpened;
         this.number = number;
         inputBorders = new Rectangle(x,y,size,size);

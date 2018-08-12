@@ -1,6 +1,6 @@
 package com.mygdx.helpers;
 
-import com.badlogic.gdx.graphics.Texture;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,10 +12,10 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class MyButton {
-    float x,y,w,h;
-    Rectangle  bounds;
-    TextureRegion buttonUp;
-    TextureRegion buttonDown;
+    private float x,y,w,h;
+    private Rectangle  bounds;
+    private TextureRegion buttonUp;
+    private TextureRegion buttonDown;
     public boolean isPressed = false;
 
 
@@ -46,17 +46,18 @@ public class MyButton {
 
     }
 
-    public boolean isTouchDown(int screenX, int screenY) {
+    boolean isTouchDown(int screenX, int screenY) {
 
         if (bounds.contains(screenX, screenY)) {
             isPressed = true;
             return true;
         }
 
+
         return false;
     }
 
-    public boolean isTouchUp(int screenX, int screenY) {
+    boolean isTouchUp(int screenX, int screenY) {
 
         // Мы будем учитывать только touchUp в нажатом состоянии.
         if (bounds.contains(screenX, screenY) && isPressed) {

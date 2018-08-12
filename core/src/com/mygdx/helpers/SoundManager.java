@@ -36,4 +36,9 @@ public class SoundManager {
     public  boolean isPlaying(){
         return main_theme.isPlaying();
     }
+
+    public void dispose(){
+        main_theme.dispose();
+        picked_coin.dispose();
+    }
 }

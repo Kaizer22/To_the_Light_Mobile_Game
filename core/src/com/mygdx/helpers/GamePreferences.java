@@ -90,4 +90,15 @@ public class GamePreferences {
     public int loadChosenSkin(){
         return preferences.getInteger("chosenSkin",0);
     }
+
+    public void saveEndlessModeTrigger(boolean em){
+        preferences.putBoolean("endlessModeTrigger",em);
+        preferences.flush();
+    }
+
+    public boolean loadEndlessModeTrigger(){
+        return preferences.getBoolean("endlessModeTrigger",false);
+    }
+
+
 }
